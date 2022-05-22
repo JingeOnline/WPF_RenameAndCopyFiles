@@ -12,7 +12,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <hc:StepBar Name="MyStepBar" StepIndex="{Binding StepIndex}" Grid.Row="0">
+        <hc:StepBar Name="MyStepBar" StepIndex="{Binding StepIndex,Mode=TwoWay}" Grid.Row="0">
             <hc:StepBarItem Content="Source"/>
             <hc:StepBarItem Content="Target"/>
             <hc:StepBarItem Content="Rename"/>

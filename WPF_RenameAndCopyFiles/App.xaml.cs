@@ -2,6 +2,7 @@
 using Prism.Ioc;
 using Prism.Modularity;
 using System.Windows;
+using Prism.Regions;
 
 namespace WPF_RenameAndCopyFiles
 {
@@ -12,12 +13,18 @@ namespace WPF_RenameAndCopyFiles
     {
         protected override Window CreateShell()
         {
+            IRegionManager regionManager = Container.Resolve<IRegionManager>();
+            //Set the initial navigation view
+            regionManager.RegisterViewWithRegion("ContentRegion", typeof(SetSourceView));
             return Container.Resolve<MainWindow>();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
+            containerRegistry.RegisterForNavigation<SetSourceView>();
+            containerRegistry.RegisterForNavigation<SetTargetView>();
+            containerRegistry.RegisterForNavigation<RenameView>();
+            containerRegistry.RegisterForNavigation<CopyView>();
         }
     }
 }
