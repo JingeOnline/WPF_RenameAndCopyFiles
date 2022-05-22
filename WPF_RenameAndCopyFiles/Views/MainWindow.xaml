@@ -1,0 +1,34 @@
+﻿<Window x:Class="WPF_RenameAndCopyFiles.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Title="Rename And Copy" Height="350" Width="525">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <hc:StepBar Name="MyStepBar" StepIndex="{Binding StepIndex}" Grid.Row="0">
+            <hc:StepBarItem Content="Source"/>
+            <hc:StepBarItem Content="Target"/>
+            <hc:StepBarItem Content="Rename"/>
+            <hc:StepBarItem Content="Copy"/>
+        </hc:StepBar>
+
+        <ContentControl prism:RegionManager.RegionName="ContentRegion" Grid.Row="1"/>
+
+        <Grid Grid.Row="2">
+            <Button Command="{Binding PrevCommand}" 
+                    CommandParameter="{Binding ElementName=MyStepBar}" 
+                    Content="Previous" Width="100" HorizontalAlignment="Left"/>
+            <Button Command="{Binding NextCommand}" 
+                    CommandParameter="{Binding ElementName=MyStepBar}" 
+                    Content="Next" Width="100" HorizontalAlignment="Right"/>
+        </Grid>
+        
+    </Grid>
+</Window>
