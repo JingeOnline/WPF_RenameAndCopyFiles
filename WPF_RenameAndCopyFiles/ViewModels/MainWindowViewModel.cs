@@ -9,8 +9,6 @@ namespace WPF_RenameAndCopyFiles.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private IRegionManager _regionManager;
-        //public StepBar Step_Bar { get; set; }
-
 
         private int _StepIndex;
         public int StepIndex
