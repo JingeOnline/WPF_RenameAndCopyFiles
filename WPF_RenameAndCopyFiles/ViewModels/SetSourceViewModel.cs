@@ -27,7 +27,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         public string SourceFolderPath
         {
             get { return _SourceFolderPath; }
-            set { SetProperty(ref _SourceFolderPath, value); getFiles(); }
+            set { SetProperty(ref _SourceFolderPath, value); getFiles(); StaticParaService.SourceFolderPath = SourceFolderPath; }
         }
 
         public DelegateCommand SelectFolderCommand { get; set; }

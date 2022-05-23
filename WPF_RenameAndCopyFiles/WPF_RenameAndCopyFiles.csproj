@@ -56,6 +56,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\CopyFileModel.cs" />
     <Compile Include="Models\RenameFileModel.cs" />
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Services\StaticParaService.cs" />

@@ -15,8 +15,9 @@
         <hc:StepBar Name="MyStepBar" StepIndex="{Binding StepIndex,Mode=TwoWay}" Grid.Row="0">
             <hc:StepBarItem Content="Source"/>
             <hc:StepBarItem Content="Target"/>
-            <hc:StepBarItem Content="Rename"/>
-            <hc:StepBarItem Content="Copy"/>
+            <hc:StepBarItem Content="Rename and Archive Target"/>
+            <!--<hc:StepBarItem Content="Archive"/>-->
+            <hc:StepBarItem Content="Copy and Archive Source"/>
         </hc:StepBar>
 
         <ContentControl prism:RegionManager.RegionName="ContentRegion" Grid.Row="1"/>

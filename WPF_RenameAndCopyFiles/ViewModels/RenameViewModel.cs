@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
 using Prism.Regions;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WPF_RenameAndCopyFiles.Models;
 using WPF_RenameAndCopyFiles.Services;
 
@@ -29,9 +31,40 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             set { SetProperty(ref _FileModels, value); }
         }
 
+        private Visibility _IsDoneColumnVisibility;
+        public Visibility IsDoneColumnVisibility
+        {
+            get { return _IsDoneColumnVisibility; }
+            set { SetProperty(ref _IsDoneColumnVisibility, value); }
+        }
+
+        public DelegateCommand RenameCommand { get; set; }
+
+
         public RenameViewModel()
         {
             RenameAppending = ConfigurationManager.AppSettings["RenameAppending"];
+            RenameCommand = new DelegateCommand(rename);
+            IsDoneColumnVisibility = Visibility.Collapsed;
+        }
+
+        private void rename()
+        {
+            foreach(RenameFileModel file in FileModels.Where(x=>x.IsExist))
+            {
+                try
+                {
+                    File.Move(file.OrigionalFilePath, file.NewFilePath);
+                    file.IsDone = true;
+                    IsDoneColumnVisibility = Visibility.Visible;
+                    file.Message = "Successful";
+                }
+                catch(Exception ex)
+                {
+                    file.Message = ex.Message+"\r\n"+ex.InnerException.Message;
+                }
+
+            }
         }
 
         public void OnNavigatedTo(NavigationContext navigationContext)
@@ -42,7 +75,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             {
                 foreach (FileInfo fileInfo in StaticParaService.StaticSourceFiles)
                 {
-                    FileModels.Add(new RenameFileModel(fileInfo.Name,directoryInfo.FullName,RenameAppending));
+                    FileModels.Add(new RenameFileModel(fileInfo,directoryInfo.FullName,RenameAppending));
                 }
             }
         }

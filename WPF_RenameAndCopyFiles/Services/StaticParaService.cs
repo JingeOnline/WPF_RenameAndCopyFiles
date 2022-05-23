@@ -12,5 +12,7 @@ namespace WPF_RenameAndCopyFiles.Services
     {
         public static List<FileInfo> StaticSourceFiles = new List<FileInfo>();
         public static List<DirectoryInfo> StaticTargetFolders = new List<DirectoryInfo>();
+        public static string SourceFolderPath;
+
     }
 }

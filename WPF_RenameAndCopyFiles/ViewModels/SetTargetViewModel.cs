@@ -11,6 +11,7 @@ using System.Configuration;
 using WPF_RenameAndCopyFiles.Services;
 using Prism.Regions;
 using System.Diagnostics;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace WPF_RenameAndCopyFiles.ViewModels
 {
@@ -23,10 +24,44 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             set { SetProperty(ref _TargetFolders, value); }
         }
 
+        private DirectoryInfo _SelectedFolder;
+        public DirectoryInfo SelectedFolder
+        {
+            get { return _SelectedFolder; }
+            set { SetProperty(ref _SelectedFolder, value); }
+        }
+
+
+        public DelegateCommand AddFolderCommand { get; set; }
+        public DelegateCommand RemoveFolderCommand { get; set; }
+
         public SetTargetViewModel()
         {
             TargetFolders = new ObservableCollection<DirectoryInfo>();
+            AddFolderCommand = new DelegateCommand(AddFolder);
+            RemoveFolderCommand = new DelegateCommand(RemoveFolder);
             getTargetFolderPathsFromConfig();
+        }
+
+        private void RemoveFolder()
+        {
+            TargetFolders.Remove(SelectedFolder);
+        }
+
+        private void AddFolder()
+        {
+            //throw new NotImplementedException();
+            using (CommonOpenFileDialog dialog = new CommonOpenFileDialog())
+            {
+
+                dialog.IsFolderPicker = true; //Select Folder Only
+                dialog.Multiselect = false;
+
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    TargetFolders.Add( new DirectoryInfo(dialog.FileName) );
+                }
+            }
         }
 
         private void getTargetFolderPathsFromConfig()

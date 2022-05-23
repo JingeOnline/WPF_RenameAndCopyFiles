@@ -22,16 +22,19 @@
             <Run Text="Target Path Count" />
             <Run Text="{Binding TargetFolders.Count,Mode=OneWay}"/>
         </TextBlock>
-        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding TargetFolders}" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding TargetFolders}" AutoGenerateColumns="False" IsReadOnly="True"
+                  SelectedItem="{Binding SelectedFolder}" SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 <DataGridCheckBoxColumn Header="IsExist" Binding="{Binding Exists,Mode=OneWay}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Path" Binding="{Binding FullName}"/>
+                <DataGridTextColumn Header="Path" Binding="{Binding FullName}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Row="1" Grid.Column="2">
-            <Button Content="+" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" Margin="0,8"/>
-            <Button Content="-" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" />
+            <Button Content="+" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" Margin="0,8"
+                    Command="{Binding AddFolderCommand}"/>
+            <Button Content="-" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" 
+                    Command="{Binding RemoveFolderCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -1,14 +1,16 @@
 ﻿using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPF_RenameAndCopyFiles.Services;
 
 namespace WPF_RenameAndCopyFiles.Models
 {
-    public class RenameFileModel:BindableBase
+    public class RenameFileModel : BindableBase
     {
         private string _OrigionalName;
         public string OrigionalName
@@ -41,7 +43,7 @@ namespace WPF_RenameAndCopyFiles.Models
         private bool _IsDone;
         public bool IsDone
         {
-            get { return _IsDone;}
+            get { return _IsDone; }
             set { SetProperty(ref _IsDone, value); }
         }
 
@@ -49,7 +51,7 @@ namespace WPF_RenameAndCopyFiles.Models
         public bool IsExist
         {
             get { return _IsExist; }
-            set { SetProperty(ref _IsExist,value); }
+            set { SetProperty(ref _IsExist, value); }
         }
 
         private string _Message;
@@ -59,15 +61,26 @@ namespace WPF_RenameAndCopyFiles.Models
             set { SetProperty(ref _Message, value); }
         }
 
-        public RenameFileModel(string fileName, string folderPath, string renameAppending )
+        public RenameFileModel(FileInfo fileInfo, string folderPath, string renameAppending)
         {
-            OrigionalName= fileName;
-            OrigionalFilePath = Path.Combine(folderPath, fileName);
-            NewName = fileName + renameAppending;
-            NewFilePath = Path.Combine(folderPath,NewName);
-            IsExist=File.Exists(OrigionalFilePath);
+            OrigionalName = fileInfo.Name;
+            NewName = fileInfo.Name + renameAppending;
+
+            string fileNameAndParentFolder = fileInfo.FullName.Replace(StaticParaService.SourceFolderPath+"\\",string.Empty);
+            OrigionalFilePath = Path.Combine(folderPath, fileNameAndParentFolder);
+            NewFilePath = OrigionalFilePath.Replace(StaticParaService.SourceFolderPath, folderPath).Replace(fileInfo.Name, NewName);
+            //NewFilePath = Path.Combine(@"C:\Users\jinge\source\repos\WPF_RenameAndCopyFiles\WPF_RenameAndCopyFiles\bin\Debug\Backup1",NewName);
+            Debug.WriteLine(OrigionalFilePath);
+            Debug.WriteLine(NewFilePath);
+            CheckFileExistAsync(OrigionalFilePath);
         }
 
-
+        public void CheckFileExistAsync(string filPath)
+        {
+            var task = Task.Run(() =>
+            {
+                IsExist = File.Exists(filPath);
+            });
+        }
     }
 }

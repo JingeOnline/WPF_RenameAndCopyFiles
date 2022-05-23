@@ -27,7 +27,7 @@
             <Run Text="Files Count" />
             <Run Text="{Binding Files.Count,Mode=OneWay}"/>
         </TextBlock>
-        <DataGrid Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Files}" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Files}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="LastWriteTime" Binding="{Binding LastWriteTime}"/>
