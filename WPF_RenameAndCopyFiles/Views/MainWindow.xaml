@@ -4,7 +4,7 @@
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
         xmlns:hc="https://handyorg.github.io/handycontrol"
-        Title="Rename And Copy" Height="350" Width="525">
+        Title="Rename And Copy" Height="640" Width="960">
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

@@ -2,7 +2,10 @@
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 
 namespace WPF_RenameAndCopyFiles.ViewModels
 {
@@ -19,6 +22,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         public DelegateCommand<StepBar> PrevCommand { get; set; }
         public DelegateCommand<StepBar> NextCommand { get; set; }
+
+
 
         public MainWindowViewModel(IRegionManager regionManager)
         {

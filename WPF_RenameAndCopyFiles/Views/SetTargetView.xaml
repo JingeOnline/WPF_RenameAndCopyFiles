@@ -8,7 +8,30 @@
              xmlns:local="clr-namespace:WPF_RenameAndCopyFiles.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Gainsboro">
-            
+    <Grid Margin="0,16,0,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="16"/>
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Left" Grid.Row="0" Margin="0,8">
+            <Run Text="Target Path Count" />
+            <Run Text="{Binding TargetFolders.Count,Mode=OneWay}"/>
+        </TextBlock>
+        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding TargetFolders}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridCheckBoxColumn Header="IsExist" Binding="{Binding Exists,Mode=OneWay}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Path" Binding="{Binding FullName}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="1" Grid.Column="2">
+            <Button Content="+" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" Margin="0,8"/>
+            <Button Content="-" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" />
+        </StackPanel>
     </Grid>
 </UserControl>
