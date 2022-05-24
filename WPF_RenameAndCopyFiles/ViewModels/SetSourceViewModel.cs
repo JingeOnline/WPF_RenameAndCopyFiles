@@ -11,6 +11,7 @@ using System.IO;
 using System.Collections.ObjectModel;
 using Prism.Regions;
 using WPF_RenameAndCopyFiles.Services;
+using System.Windows;
 
 namespace WPF_RenameAndCopyFiles.ViewModels
 {
@@ -30,13 +31,42 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             set { SetProperty(ref _SourceFolderPath, value); getFiles(); StaticParaService.SourceFolderPath = SourceFolderPath; }
         }
 
+        private string _SourceFolderPathError;
+        public string SourceFolderPathError
+        {
+            get { return _SourceFolderPathError; }
+            set { SetProperty(ref _SourceFolderPathError, value); RaisePropertyChanged(nameof(ErrorVisibility)); }
+        }
+
+        public Visibility ErrorVisibility
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(SourceFolderPathError))
+                {
+                    return Visibility.Collapsed;
+                }
+                else
+                {
+                    return Visibility.Visible;
+                }
+            }
+        }
+
         public DelegateCommand SelectFolderCommand { get; set; }
+        public DelegateCommand<string> SourceFolderPathEnterCommand { get; set; }
+
 
         public SetSourceViewModel()
         {
             SourceFolderPath=ConfigurationManager.AppSettings["SourceFolderPath"];
             SelectFolderCommand = new DelegateCommand(selectFolder);
+            SourceFolderPathEnterCommand = new DelegateCommand<string>(SourceFolderPathEnter);
+        }
 
+        private void SourceFolderPathEnter(string path)
+        {
+            SourceFolderPath = path;
         }
 
         private void selectFolder()
@@ -58,15 +88,25 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         {
             Files = new ObservableCollection<FileInfo>();
             DirectoryInfo sourceFolder = new DirectoryInfo(SourceFolderPath);
-            foreach (FileInfo file in sourceFolder.GetFiles(".",SearchOption.AllDirectories))
+            if (sourceFolder.Exists)
             {
-                Files.Add(file);
+                SourceFolderPathError = "";
+                foreach (FileInfo file in sourceFolder.GetFiles(".", SearchOption.AllDirectories))
+                {
+                    Files.Add(file);
+                }
             }
+            else
+            {
+                SourceFolderPathError = "⬤ The source folder path is not exist.";
+            }
+
+
         }
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            //throw new NotImplementedException();
+
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -76,8 +116,11 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            //throw new NotImplementedException();
+
             StaticParaService.StaticSourceFiles = Files.ToList();
+            //Save to config
+            ConfigService.SaveKeyValue("SourceFolderPath",SourceFolderPath);
+
         }
     }
 }

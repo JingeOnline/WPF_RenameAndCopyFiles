@@ -16,6 +16,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -23,21 +24,26 @@
             <ColumnDefinition Width="16"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Rename Appending" HorizontalAlignment="Left" Margin="0,0,0,8"/>
-        <TextBox HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding RenameAppending, Mode=TwoWay}"/>
-        <Button Grid.Column="2" Grid.Row="1" Content="Append" HorizontalAlignment="Stretch" Command="{Binding AppendCommand}"/>
-        <TextBlock HorizontalAlignment="Left" Grid.Row="2" Margin="0,8">
-            <Run Text="Target Path Count" />
+        <!--<TextBlock Text="Archive Folder After Rename" HorizontalAlignment="Left" Margin="0,0,0,8"/>
+        <TextBox HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding ArchiveFolderPath, Mode=TwoWay}" x:Name="PathTextBox">
+            <TextBox.InputBindings>
+                <KeyBinding Command="{Binding Path=ArchiveFolderPathEnterCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=PathTextBox}"/>
+            </TextBox.InputBindings>
+        </TextBox>
+        <Button Grid.Column="2" Grid.Row="1" Content="Select" HorizontalAlignment="Stretch" Command="{Binding SelectFolderCommand}"/>
+        <TextBlock Text="{Binding ArchiveFolderPathError}" Foreground="Red" Grid.Row="2" Visibility="{Binding ErrorVisibility,Mode=OneWay}"/>-->
+        <TextBlock HorizontalAlignment="Left" Grid.Row="3" Margin="0,8">
+            <Run Text="Target File Count" />
             <Run Text="{Binding FileModels.Count,Mode=OneWay}"/>
         </TextBlock>
-        <DataGrid Grid.Row="3" ItemsSource="{Binding FileModels}" IsReadOnly="True" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="4" ItemsSource="{Binding FileModels}" IsReadOnly="True" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding IsDone}" Header="Done" 
                                         Visibility="{Binding Value,Source={StaticResource IsDoneColumnVisibility} }"/>
                 <DataGridTextColumn Binding="{Binding OrigionalName}" Header="Origional Name"/>
                 <DataGridCheckBoxColumn Binding="{Binding IsExist}" Header="IsExist"/>
                 <DataGridTextColumn Binding="{Binding NewName}" Header="New Name"/>
-                <DataGridTextColumn Binding="{Binding OrigionalFilePath}" Header="Origional FilePath"/>
+                <DataGridTextColumn Binding="{Binding OrigionalFilePath}" Header="Target FilePath"/>
                 <DataGridTextColumn Binding="{Binding Message}" Header="Error" >
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
@@ -47,9 +53,10 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="3" Grid.Column="2">
+        <StackPanel Grid.Row="4" Grid.Column="2">
             <Button Content="Preview" HorizontalAlignment="Stretch" Margin="0,8"/>
-            <Button Content="Rename" HorizontalAlignment="Stretch" Command="{Binding RenameCommand}"/>
+            <Button Content="Rename And Archive" HorizontalAlignment="Stretch" Command="{Binding RenameCommand}" 
+                    HorizontalContentAlignment="Left" ToolTip="Rename And Archive"/>
         </StackPanel>
     </Grid>
 </UserControl>

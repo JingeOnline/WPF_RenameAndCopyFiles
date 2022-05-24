@@ -86,8 +86,14 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            //throw new NotImplementedException();
             StaticParaService.StaticTargetFolders = TargetFolders.ToList();
+            
+            //Save to config
+            ConfigService.ClearKeysBySearch("TargetFolderPath");
+            for(int i=0;i< TargetFolders.Count; i++)
+            {
+                ConfigService.CreatKeyValue("TargetFolderPath_"+i+1,TargetFolders[i].FullName);
+            }
         }
     }
 }

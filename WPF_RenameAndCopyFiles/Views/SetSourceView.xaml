@@ -5,11 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:local="clr-namespace:WPF_RenameAndCopyFiles.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="0,16,0,16">
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -21,13 +23,19 @@
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <TextBlock Text="Please select source folder" HorizontalAlignment="Left" Margin="0,0,0,8"/>
-        <TextBox HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding SourceFolderPath, Mode=TwoWay}"/>
+
+        <TextBox HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding SourceFolderPath, Mode=TwoWay,UpdateSourceTrigger=LostFocus}" x:Name="PathTextBox">
+            <TextBox.InputBindings>
+                <KeyBinding Command="{Binding Path=SourceFolderPathEnterCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=PathTextBox}"/>
+            </TextBox.InputBindings>
+        </TextBox>
+        <TextBlock Text="{Binding SourceFolderPathError}" Foreground="Red" Grid.Row="2" Visibility="{Binding ErrorVisibility,Mode=OneWay}"/>
         <Button Grid.Column="2" Grid.Row="1" Content="Select" HorizontalAlignment="Stretch" Command="{Binding SelectFolderCommand}"/>
-        <TextBlock HorizontalAlignment="Left" Grid.Row="2" Margin="0,8">
+        <TextBlock HorizontalAlignment="Left" Grid.Row="3" Margin="0,8">
             <Run Text="Files Count" />
             <Run Text="{Binding Files.Count,Mode=OneWay}"/>
         </TextBlock>
-        <DataGrid Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Files}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+        <DataGrid Grid.Row="4" Grid.Column="0" ItemsSource="{Binding Files}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="LastWriteTime" Binding="{Binding LastWriteTime}"/>
@@ -35,7 +43,7 @@
                 <DataGridTextColumn Header="Path" Binding="{Binding FullName}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="3" Grid.Column="2">
+        <StackPanel Grid.Row="4" Grid.Column="2">
             <Button Content="+" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" Margin="0,8"/>
             <Button Content="-" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0"/>
         </StackPanel>

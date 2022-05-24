@@ -48,8 +48,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             {
                 case 0: _regionManager.RequestNavigate("ContentRegion", "SetSourceView"); break;
                 case 1: _regionManager.RequestNavigate("ContentRegion", "SetTargetView"); break;
-                case 2: _regionManager.RequestNavigate("ContentRegion", "RenameView"); break;
-                case 3: _regionManager.RequestNavigate("ContentRegion", "CopyView"); break;
+                case 2: _regionManager.RequestNavigate("ContentRegion", "ArchiveView"); break;
+                case 3: _regionManager.RequestNavigate("ContentRegion", "RenameView"); break;
             }
         }
     }

@@ -19,7 +19,7 @@
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Left" Grid.Row="0" Margin="0,8">
-            <Run Text="Target Path Count" />
+            <Run Text="Target Folder Path Count" />
             <Run Text="{Binding TargetFolders.Count,Mode=OneWay}"/>
         </TextBlock>
         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding TargetFolders}" AutoGenerateColumns="False" IsReadOnly="True"
