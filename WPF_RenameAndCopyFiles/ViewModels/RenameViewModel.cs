@@ -124,7 +124,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             string archiveFolder = Path.Combine(ArchiveFolderPath, folderName);
             Directory.CreateDirectory(archiveFolder);
             //Move
-            foreach(FileInfo file in StaticParaService.StaticSourceFiles)
+            foreach(FileInfo file in GlobalStaticService.GlobalSourceFiles)
             {
                 File.Move(file.FullName, Path.Combine(archiveFolder, file.Name));
             }
@@ -149,9 +149,9 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             FileModels = new ObservableCollection<RenameFileModel>();
             string renameAppending = ConfigurationManager.AppSettings["RenameAppending"];
 
-            foreach (DirectoryInfo directoryInfo in StaticParaService.StaticTargetFolders)
+            foreach (DirectoryInfo directoryInfo in GlobalStaticService.GlobalTargetFolders)
             {
-                foreach (FileInfo fileInfo in StaticParaService.StaticSourceFiles)
+                foreach (FileInfo fileInfo in GlobalStaticService.GlobalSourceFiles)
                 {
                     FileModels.Add(new RenameFileModel(fileInfo,directoryInfo.FullName,renameAppending));
                 }

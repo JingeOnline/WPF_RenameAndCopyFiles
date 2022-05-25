@@ -28,7 +28,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         public string SourceFolderPath
         {
             get { return _SourceFolderPath; }
-            set { SetProperty(ref _SourceFolderPath, value); getFiles(); StaticParaService.SourceFolderPath = SourceFolderPath; }
+            set { SetProperty(ref _SourceFolderPath, value); getFiles(); }
         }
 
         private string _SourceFolderPathError;
@@ -117,7 +117,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
 
-            StaticParaService.StaticSourceFiles = Files.ToList();
+            GlobalStaticService.GlobalSourceFiles = Files.ToList();
+            GlobalStaticService.GlobalSourceFolderPath = SourceFolderPath;
             //Save to config
             ConfigService.SaveKeyValue("SourceFolderPath",SourceFolderPath);
 

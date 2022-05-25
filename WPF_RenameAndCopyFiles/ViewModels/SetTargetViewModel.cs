@@ -86,7 +86,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            StaticParaService.StaticTargetFolders = TargetFolders.ToList();
+            GlobalStaticService.GlobalTargetFolders = TargetFolders.ToList();
             
             //Save to config
             ConfigService.ClearKeysBySearch("TargetFolderPath");

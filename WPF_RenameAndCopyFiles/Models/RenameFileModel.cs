@@ -66,7 +66,7 @@ namespace WPF_RenameAndCopyFiles.Models
             OrigionalName = fileInfo.Name;
             NewName = fileInfo.Name + renameAppending;
 
-            string fileNameAndParentFolder = fileInfo.FullName.Replace(StaticParaService.SourceFolderPath+"\\",string.Empty);
+            string fileNameAndParentFolder = fileInfo.FullName.Replace(GlobalStaticService.GlobalSourceFolderPath+"\\",string.Empty);
             OrigionalFilePath = Path.Combine(folderPath, fileNameAndParentFolder);
             //NewFilePath = OrigionalFilePath.Replace(StaticParaService.SourceFolderPath, folderPath).Replace(fileInfo.Name, NewName);
             NewFilePath = Path.Combine(@"C:\TestRenameAndCopy\Target-1\Backup", NewName);

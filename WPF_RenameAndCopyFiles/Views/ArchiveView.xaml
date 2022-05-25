@@ -16,6 +16,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -24,23 +25,34 @@
         </Grid.ColumnDefinitions>
         <!--Source-->
         <TextBlock Text="Source file archive folder" HorizontalAlignment="Left" Margin="0,0,0,8"/>
-        <TextBox HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding ArchiveFolderPath, Mode=TwoWay}" x:Name="SourceTextBox">
+        <TextBox HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding SourceArchiveFolderPath, Mode=TwoWay}" x:Name="SourceTextBox">
             <TextBox.InputBindings>
-                <KeyBinding Command="{Binding Path=ArchiveFolderPathEnterCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=SourceTextBox}"/>
+                <KeyBinding Command="{Binding Path=SourceArchiveFolderPathEnterCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=SourceTextBox}"/>
             </TextBox.InputBindings>
         </TextBox>
-        <Button Grid.Column="2" Grid.Row="1" Content="Select" HorizontalAlignment="Stretch" Command="{Binding SelectFolderCommand}"/>
-        <TextBlock Text="{Binding ArchiveFolderPathError}" Foreground="Red" Grid.Row="2" Visibility="{Binding ErrorVisibility,Mode=OneWay}"/>
+        <Button Grid.Column="2" Grid.Row="1" Content="Select" HorizontalAlignment="Stretch" Command="{Binding SelectSourceFolderCommand}"/>
+        <TextBlock Text="{Binding SourceArchiveFolderPathError}" Foreground="Red" Grid.Row="2" Visibility="{Binding SourcePathErrorVisibility,Mode=OneWay}"/>
         <!--Target-->
-        <TextBlock Text="Target file archive folder" HorizontalAlignment="Left" Margin="0,0,0,8" Grid.Row="3"/>
-        <TextBox HorizontalAlignment="Stretch" Grid.Row="4" Text="{Binding ArchiveFolderPath, Mode=TwoWay}" x:Name="TargetTextBox">
+        <TextBlock Text="Target file archive folder" HorizontalAlignment="Left" Margin="0,16,0,8" Grid.Row="3"/>
+        <TextBox HorizontalAlignment="Stretch" Grid.Row="4" Text="{Binding TargetArchiveFolderPath, Mode=TwoWay}" x:Name="TargetTextBox">
             <TextBox.InputBindings>
-                <KeyBinding Command="{Binding Path=ArchiveFolderPathEnterCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=TargetTextBox}"/>
+                <KeyBinding Command="{Binding Path=TargetArchiveFolderPathEnterCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=TargetTextBox}"/>
             </TextBox.InputBindings>
         </TextBox>
-        <Button Grid.Column="2" Grid.Row="4" Content="Select" HorizontalAlignment="Stretch" Command="{Binding SelectFolderCommand}"/>
-        <TextBlock Text="{Binding ArchiveFolderPathError}" Foreground="Red" Grid.Row="5" Visibility="{Binding ErrorVisibility,Mode=OneWay}"/>
+        <Button Grid.Column="2" Grid.Row="4" Content="Select" HorizontalAlignment="Stretch" Command="{Binding SelectTargetFolderCommand}"/>
+        <TextBlock Text="{Binding TargetArchiveFolderPathError}" Foreground="Red" Grid.Row="5" Visibility="{Binding TargetPathErrorVisibility,Mode=OneWay}"/>
 
+        <DataGrid Grid.Row="6" Grid.Column="0" ItemsSource="{Binding TargetArchiveFolders}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" Margin="0,16,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Root" Binding="{Binding Root}"/>
+                <DataGridCheckBoxColumn Header="IsExist" Binding="{Binding Exists,Mode=OneWay}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Path" Binding="{Binding FullName}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="6" Grid.Column="2" Margin="0,16,0,0">
+            <Button Content="Create" HorizontalAlignment="Stretch" Command="{Binding CreateFolderIfNotExistCommand}"
+                    ToolTip="Create folder if not exist."/>
+        </StackPanel>
     </Grid>
 
 </UserControl>
