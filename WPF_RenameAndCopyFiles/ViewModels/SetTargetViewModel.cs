@@ -59,7 +59,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    TargetFolders.Add( new DirectoryInfo(dialog.FileName) );
+                    TargetFolders.Add(new DirectoryInfo(dialog.FileName));
                 }
             }
         }
@@ -69,7 +69,14 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             IEnumerable<string> paths = ConfigService.GetValueBySearchKeys("TargetFolderPath");
             foreach (string path in paths)
             {
-                TargetFolders.Add(new DirectoryInfo(path));
+                try
+                {
+                    TargetFolders.Add(new DirectoryInfo(path));
+                }
+                catch
+                {
+                    //Todo:Show Message pop up
+                }
             }
         }
 
@@ -87,12 +94,13 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             GlobalStaticService.GlobalTargetFolders = TargetFolders.ToList();
-            
+
             //Save to config
             ConfigService.ClearKeysBySearch("TargetFolderPath");
-            for(int i=0;i< TargetFolders.Count; i++)
+            for (int i = 0; i < TargetFolders.Count; i++)
             {
-                ConfigService.CreatKeyValue("TargetFolderPath_"+i+1,TargetFolders[i].FullName);
+                int index = i + 1;
+                ConfigService.CreatKeyValue("TargetFolderPath_" + index, TargetFolders[i].FullName);
             }
         }
     }
