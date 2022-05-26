@@ -12,6 +12,8 @@ using WPF_RenameAndCopyFiles.Services;
 using Prism.Regions;
 using System.Diagnostics;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using HandyControl.Controls;
+using System.Windows;
 
 namespace WPF_RenameAndCopyFiles.ViewModels
 {
@@ -73,9 +75,10 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                 {
                     TargetFolders.Add(new DirectoryInfo(path));
                 }
-                catch
+                catch (Exception ex)
                 {
                     //Todo:Show Message pop up
+                    HandyControl.Controls.MessageBox.Show($"Path: {path}","Fail to parse path from config.",MessageBoxButton.OK,MessageBoxImage.Error);
                 }
             }
         }

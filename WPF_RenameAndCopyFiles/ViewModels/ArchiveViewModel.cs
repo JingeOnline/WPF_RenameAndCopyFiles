@@ -45,6 +45,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             set { SetProperty(ref _TargetArchiveFolderPathError, value); }
         }
 
+        public Dictionary<string, string> folerToArchiveFolder { get; set; } = new Dictionary<string, string>();
+
         public Visibility SourcePathErrorVisibility
         {
             get
@@ -99,8 +101,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
             CreateFolderIfNotExistCommand = new DelegateCommand(creatFolderIfNotExist,canCreateFolderIfNotExist);
 
-            SourceArchiveFolderPath = ConfigurationManager.AppSettings["SourceArchiveFolderPath"];
-            TargetArchiveFolderPath = ConfigurationManager.AppSettings["TargetArchiveFolderPath"];
+            SourceArchiveFolderPath = ConfigurationManager.AppSettings["SourceArchiveFolderPath"] + "\\Backup " + DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
+            TargetArchiveFolderPath = ConfigurationManager.AppSettings["TargetArchiveFolderPath"]+"\\Backup "+DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
         }
 
         private bool canCreateFolderIfNotExist()
@@ -110,12 +112,19 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         private async void creatFolderIfNotExist()
         {
-            foreach(DirectoryInfo folder in TargetArchiveFolders.Where(x=>x.Exists==false))
+            DirectoryInfo sourceFolder = new DirectoryInfo(SourceArchiveFolderPath);
+            if (!sourceFolder.Exists)
+            {
+                Directory.CreateDirectory(SourceArchiveFolderPath);
+            }
+
+            foreach (DirectoryInfo folder in TargetArchiveFolders.Where(x=>x.Exists==false))
             {
                 Directory.CreateDirectory(folder.FullName);
             }
-            await Task.Delay(1000);
+            await Task.Delay(500);
             showTargetArchiveFolders();
+            checkSourcePathExist();
         }
 
         private void showTargetArchiveFolders()
@@ -125,6 +134,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             {
                 string targetArchivePath = Path.Combine(folder.FullName, TargetArchiveFolderPath);
                 TargetArchiveFolders.Add(new DirectoryInfo(targetArchivePath));
+                folerToArchiveFolder[folder.FullName] = targetArchivePath;
             }
         }
 
@@ -194,7 +204,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             GlobalStaticService.GlobalSourceArchiveFolderPath = SourceArchiveFolderPath;
-            GlobalStaticService.GlobalTargetArchiveFolderPaths = TargetArchiveFolders.ToList();
+            GlobalStaticService.GlobalTargetFolderAndArchiveFolderPaths = folerToArchiveFolder;
+            //GlobalStaticService.GlobalTargetArchiveFolderPaths = TargetArchiveFolders.ToList();
         }
     }
 }

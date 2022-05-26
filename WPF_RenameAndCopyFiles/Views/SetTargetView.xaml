@@ -4,10 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:converters="clr-namespace:WPF_RenameAndCopyFiles.Converters"
              prism:ViewModelLocator.AutoWireViewModel="True"
              xmlns:local="clr-namespace:WPF_RenameAndCopyFiles.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:BoolToColorConverter x:Key="bool2color"/>
+    </UserControl.Resources>
+    
+    
     <Grid Margin="0,16,0,16">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -29,10 +35,9 @@
                 <!--<DataGridCheckBoxColumn Header="IsExist" Binding="{Binding Exists,Mode=OneWay}" IsReadOnly="True"/>-->
                 <DataGridTemplateColumn Header="IsExist">
                     <DataGridTemplateColumn.CellTemplate>
-                        <!--IsHitTestVisible="False"-->
                         <DataTemplate>
-                            <Border BorderThickness="2" BorderBrush="Red" HorizontalAlignment="Center">
-                                <CheckBox IsChecked="{Binding Exists,Mode=OneWay}" HorizontalAlignment="Center"/>
+                            <Border BorderThickness="2" BorderBrush="{Binding ElementName=CheckBox,Path=IsChecked, Converter={StaticResource bool2color}}" HorizontalAlignment="Center">
+                                <CheckBox IsChecked="{Binding Exists,Mode=OneWay}" HorizontalAlignment="Center" x:Name="CheckBox" IsHitTestVisible="False"/>
                             </Border>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

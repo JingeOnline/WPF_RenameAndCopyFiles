@@ -5,9 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:converters="clr-namespace:WPF_RenameAndCopyFiles.Converters"
              xmlns:local="clr-namespace:WPF_RenameAndCopyFiles.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <converters:BoolToColorConverter x:Key="bool2color"/>
+    </UserControl.Resources>
+
+
     <Grid Margin="0,16,0,16">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -45,7 +52,16 @@
         <DataGrid Grid.Row="6" Grid.Column="0" ItemsSource="{Binding TargetArchiveFolders}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" Margin="0,16,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Root" Binding="{Binding Root}"/>
-                <DataGridCheckBoxColumn Header="IsExist" Binding="{Binding Exists,Mode=OneWay}" IsReadOnly="True"/>
+                <!--<DataGridCheckBoxColumn Header="IsExist" Binding="{Binding Exists,Mode=OneWay}" IsReadOnly="True"/>-->
+                <DataGridTemplateColumn Header="IsExist">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border BorderThickness="2" BorderBrush="{Binding ElementName=CheckBox,Path=IsChecked, Converter={StaticResource bool2color}}" HorizontalAlignment="Center">
+                                <CheckBox IsChecked="{Binding Exists,Mode=OneWay}" HorizontalAlignment="Center" x:Name="CheckBox" IsHitTestVisible="False"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Path" Binding="{Binding FullName}"/>
             </DataGrid.Columns>
         </DataGrid>

@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="WPF_RenameAndCopyFiles.Views.ExecuteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:local="clr-namespace:WPF_RenameAndCopyFiles.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <StackPanel Margin="0,16,0,0">
+        <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="8" Margin="8,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Move Target Files To Archive" FontSize="18" Margin="8,4,0,0"/>
+                <ProgressBar Margin="16,0" Grid.Column="1" Style="{DynamicResource ProgressBarPrimaryStripe}"/>
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE001;" Foreground="{DynamicResource PrimaryBrush}" 
+                                       HorizontalAlignment="Center" FontSize="18" Grid.Row="0" Grid.Column="2"
+                                       FontWeight="ExtraBold" VerticalAlignment="Center" Margin="0,0,8,0"
+                                        Visibility="{Binding IsFinish1,Converter={StaticResource Boolean2VisibilityConverter}}"/>
+                <!--<TextBlock Text="{Binding Exception1.Message}" Grid.Row="1"  Grid.Column="1" Grid.ColumnSpan="2"/>-->
+                <ListBox Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding  Exception1}" HorizontalAlignment="Stretch">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Message}" ToolTip="{Binding StackTrace}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="8" Margin="8,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Copy Source Files To Target" FontSize="18" Margin="8,4,0,0"/>
+                <ProgressBar Margin="16,0" Grid.Column="1" Style="{DynamicResource ProgressBarPrimaryStripe}"/>
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE001;" Foreground="{DynamicResource PrimaryBrush}" 
+                                       HorizontalAlignment="Center" FontSize="18" Grid.Row="0" Grid.Column="2"
+                                       FontWeight="ExtraBold" VerticalAlignment="Center" Margin="0,0,8,0"
+                                        Visibility="{Binding IsFinish1,Converter={StaticResource Boolean2VisibilityConverter}}"/>
+                <ListBox Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding  Exception2}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Message}" ToolTip="{Binding StackTrace}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="8" Margin="8,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Move Source File To Archive" FontSize="18" Margin="8,4,0,0"/>
+                <ProgressBar Margin="16,0" Grid.Column="1" Style="{DynamicResource ProgressBarPrimaryStripe}"/>
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE001;" Foreground="{DynamicResource PrimaryBrush}" 
+                                       HorizontalAlignment="Center" FontSize="18" Grid.Row="0" Grid.Column="2"
+                                       FontWeight="ExtraBlack" VerticalAlignment="Center" Margin="0,0,8,0"
+                                        Visibility="{Binding IsFinish1,Converter={StaticResource Boolean2VisibilityConverter}}"/>
+                <ListBox Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding Exception3}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Message}" ToolTip="{Binding StackTrace}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <Button HorizontalAlignment="Stretch" Content="Execute" Margin="32,32" Background="{DynamicResource PrimaryBrush}" Foreground="White"
+                FontSize="14" VerticalContentAlignment="Center" Command="{Binding ExecuteCommand}">
+            
+        </Button>
+    </StackPanel>
+
+</UserControl>

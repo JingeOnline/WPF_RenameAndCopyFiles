@@ -56,16 +56,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BoolToColorConverter.cs" />
     <Compile Include="Models\CopyFileModel.cs" />
     <Compile Include="Models\RenameFileModel.cs" />
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Services\GlobalStaticService.cs" />
     <Compile Include="ViewModels\ArchiveViewModel.cs" />
+    <Compile Include="ViewModels\ExecuteViewModel.cs" />
     <Compile Include="ViewModels\RenameViewModel.cs" />
     <Compile Include="ViewModels\SetSourceViewModel.cs" />
     <Compile Include="ViewModels\SetTargetViewModel.cs" />
     <Compile Include="Views\ArchiveView.xaml.cs">
       <DependentUpon>ArchiveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExecuteView.xaml.cs">
+      <DependentUpon>ExecuteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RenameView.xaml.cs">
       <DependentUpon>RenameView.xaml</DependentUpon>
@@ -77,6 +82,10 @@
       <DependentUpon>SetTargetView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\ArchiveView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExecuteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
