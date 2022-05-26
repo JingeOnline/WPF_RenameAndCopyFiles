@@ -29,8 +29,11 @@
                 <!--<DataGridCheckBoxColumn Header="IsExist" Binding="{Binding Exists,Mode=OneWay}" IsReadOnly="True"/>-->
                 <DataGridTemplateColumn Header="IsExist">
                     <DataGridTemplateColumn.CellTemplate>
+                        <!--IsHitTestVisible="False"-->
                         <DataTemplate>
-                            <CheckBox Foreground="Red" IsChecked="{Binding Exists,Mode=OneWay}" IsHitTestVisible="False"/>
+                            <Border BorderThickness="2" BorderBrush="Red" HorizontalAlignment="Center">
+                                <CheckBox IsChecked="{Binding Exists,Mode=OneWay}" HorizontalAlignment="Center"/>
+                            </Border>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
