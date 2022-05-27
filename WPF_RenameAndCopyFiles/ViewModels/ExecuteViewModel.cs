@@ -114,7 +114,11 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
                 }
                 index++;
-                ProgressBarValue1 = index / sourceFileToTargetFile.Count * 100;
+                if (sourceFileToTargetFile.Count != 0)
+                {
+                    ProgressBarValue1 = index / sourceFileToTargetFile.Count * 100;
+                }
+
             }
 
             IsFinish1 = true;
@@ -141,7 +145,10 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                     }
                 }
                 index++;
-                ProgressBarValue1 = index / GlobalStaticService.GlobalTargetFolders.Count * 100;
+                if (GlobalStaticService.GlobalTargetFolders.Count != 0)
+                {
+                    ProgressBarValue1 = index / GlobalStaticService.GlobalTargetFolders.Count * 100;
+                }
             }
             IsFinish2 = true;
         }
@@ -165,7 +172,10 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                     });
                 }
                 index++;
-                ProgressBarValue1 = index / GlobalStaticService.GlobalSourceFiles.Count * 100;
+                if (GlobalStaticService.GlobalSourceFiles.Count != 0)
+                {
+                    ProgressBarValue1 = index / GlobalStaticService.GlobalSourceFiles.Count * 100;
+                }
             }
             IsFinish3 = true;
         }

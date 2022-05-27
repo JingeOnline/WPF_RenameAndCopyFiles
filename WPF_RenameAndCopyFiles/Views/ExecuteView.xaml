@@ -34,7 +34,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Move Target Files To Archive" FontSize="18" Margin="8,4,0,0"/>
-                    <ProgressBar Margin="16,0" Grid.Column="1" Style="{DynamicResource ProgressBarFlat}" Value="{Binding ProgressBarValue1}"/>
+                    <ProgressBar Margin="16,0" Grid.Column="1" Style="{DynamicResource ProgressBarSuccess}" Value="{Binding ProgressBarValue1}" Height="12"/>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE001;" Foreground="{DynamicResource PrimaryBrush}" 
                                        HorizontalAlignment="Center" FontSize="18" Grid.Row="0" Grid.Column="2"
                                        FontWeight="ExtraBold" VerticalAlignment="Center" Margin="0,0,8,0"
@@ -62,7 +62,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Copy Source Files To Target" FontSize="18" Margin="8,4,0,0"/>
-                    <ProgressBar Margin="16,0" Grid.Column="1" Style="{DynamicResource ProgressBarFlat}" Value="{Binding ProgressBarValue2}"/>
+                    <ProgressBar Margin="16,0" Grid.Column="1" Style="{DynamicResource ProgressBarSuccess}" Value="{Binding ProgressBarValue2}"  Height="12"/>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE001;" Foreground="{DynamicResource PrimaryBrush}" 
                                        HorizontalAlignment="Center" FontSize="18" Grid.Row="0" Grid.Column="2"
                                        FontWeight="ExtraBold" VerticalAlignment="Center" Margin="0,0,8,0"
@@ -89,7 +89,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Move Source File To Archive" FontSize="18" Margin="8,4,0,0"/>
-                    <ProgressBar Margin="16,0" Grid.Column="1" Style="{DynamicResource ProgressBarFlat}" Value="{Binding ProgressBarValue3}"/>
+                    <ProgressBar Margin="16,0" Grid.Column="1" Style="{DynamicResource ProgressBarSuccess}" Value="{Binding ProgressBarValue3}"  Height="12"/>
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE001;" Foreground="{DynamicResource PrimaryBrush}" 
                                        HorizontalAlignment="Center" FontSize="18" Grid.Row="0" Grid.Column="2"
                                        FontWeight="ExtraBlack" VerticalAlignment="Center" Margin="0,0,8,0"

@@ -102,7 +102,6 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             CreateFolderIfNotExistCommand = new DelegateCommand(creatFolderIfNotExist,canCreateFolderIfNotExist);
 
             SourceArchiveFolderPath = ConfigurationManager.AppSettings["SourceArchiveFolderPath"] + "\\Backup " + DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
-            //SourceArchiveFolderPath = ConfigurationManager.AppSettings["SourceArchiveFolderPath"] + "\\Backup " + DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
             TargetArchiveFolderPath = ConfigurationManager.AppSettings["TargetArchiveFolderPath"]+"\\Backup "+DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
         }
 
