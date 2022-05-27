@@ -23,7 +23,7 @@ namespace WPF_RenameAndCopyFiles
         {
             containerRegistry.RegisterForNavigation<SetSourceView>();
             containerRegistry.RegisterForNavigation<SetTargetView>();
-            containerRegistry.RegisterForNavigation<RenameView>();
+            //containerRegistry.RegisterForNavigation<RenameView>();
             containerRegistry.RegisterForNavigation<ArchiveView>();
             containerRegistry.RegisterForNavigation<ExecuteView>();
         }

@@ -46,6 +46,25 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             set { SetProperty(ref _IsFinish3, value); }
         }
 
+        private double _ProgressBarValue1;
+        public double ProgressBarValue1
+        {
+            get { return _ProgressBarValue1; }
+            set { SetProperty(ref _ProgressBarValue1, value); }
+        }
+
+        private double _ProgressBarValue2;
+        public double ProgressBarValue2
+        {
+            get { return _ProgressBarValue2; }
+            set { SetProperty(ref _ProgressBarValue2, value); }
+        }
+        private double _ProgressBarValue3;
+        public double ProgressBarValue3
+        {
+            get { return _ProgressBarValue3; }
+            set { SetProperty(ref _ProgressBarValue3, value); }
+        }
         public ObservableCollection<Exception> Exception1 { get; set; } = new ObservableCollection<Exception>();
         public ObservableCollection<Exception> Exception2 { get; set; } = new ObservableCollection<Exception>();
         public ObservableCollection<Exception> Exception3 { get; set; } = new ObservableCollection<Exception>();
@@ -71,6 +90,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         private void moveTargetFileToArchive()
         {
+            int index = 0;
             foreach (DirectoryInfo folder in GlobalStaticService.GlobalTargetFolders)
             {
                 string archiveFolderPath = GlobalStaticService.GlobalTargetFolderAndArchiveFolderPaths[folder.FullName];
@@ -93,12 +113,16 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                     }
 
                 }
+                index++;
+                ProgressBarValue1 = index / sourceFileToTargetFile.Count * 100;
             }
+
             IsFinish1 = true;
         }
 
         private void copyFileToTarget()
         {
+            int index = 0;
             foreach (DirectoryInfo folder in GlobalStaticService.GlobalTargetFolders)
             {
                 Dictionary<string, string> sourceFileToTargetFile = getTargetFilePaths(folder.FullName);
@@ -116,6 +140,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                         });
                     }
                 }
+                index++;
+                ProgressBarValue1 = index / GlobalStaticService.GlobalTargetFolders.Count * 100;
             }
             IsFinish2 = true;
         }
@@ -123,6 +149,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         private void moveSourceFileToArchive()
         {
+            int index = 0;
             foreach (FileInfo file in GlobalStaticService.GlobalSourceFiles)
             {
                 string archiveFilePath = Path.Combine(GlobalStaticService.GlobalSourceArchiveFolderPath, file.Name);
@@ -137,6 +164,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                         Exception3.Add(ex);
                     });
                 }
+                index++;
+                ProgressBarValue1 = index / GlobalStaticService.GlobalSourceFiles.Count * 100;
             }
             IsFinish3 = true;
         }

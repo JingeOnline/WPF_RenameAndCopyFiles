@@ -63,7 +63,6 @@
     <Compile Include="Services\GlobalStaticService.cs" />
     <Compile Include="ViewModels\ArchiveViewModel.cs" />
     <Compile Include="ViewModels\ExecuteViewModel.cs" />
-    <Compile Include="ViewModels\RenameViewModel.cs" />
     <Compile Include="ViewModels\SetSourceViewModel.cs" />
     <Compile Include="ViewModels\SetTargetViewModel.cs" />
     <Compile Include="Views\ArchiveView.xaml.cs">
@@ -71,9 +70,6 @@
     </Compile>
     <Compile Include="Views\ExecuteView.xaml.cs">
       <DependentUpon>ExecuteView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RenameView.xaml.cs">
-      <DependentUpon>RenameView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SetSourceView.xaml.cs">
       <DependentUpon>SetSourceView.xaml</DependentUpon>
@@ -102,10 +98,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\RenameView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\SetSourceView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

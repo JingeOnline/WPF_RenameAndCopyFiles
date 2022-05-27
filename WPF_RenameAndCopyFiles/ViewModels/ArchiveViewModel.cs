@@ -102,6 +102,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             CreateFolderIfNotExistCommand = new DelegateCommand(creatFolderIfNotExist,canCreateFolderIfNotExist);
 
             SourceArchiveFolderPath = ConfigurationManager.AppSettings["SourceArchiveFolderPath"] + "\\Backup " + DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
+            //SourceArchiveFolderPath = ConfigurationManager.AppSettings["SourceArchiveFolderPath"] + "\\Backup " + DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
             TargetArchiveFolderPath = ConfigurationManager.AppSettings["TargetArchiveFolderPath"]+"\\Backup "+DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
         }
 
@@ -176,7 +177,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    SourceArchiveFolderPath = dialog.FileName;
+                    SourceArchiveFolderPath = dialog.FileName + "\\Backup " + DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
                 }
             }
         }
@@ -205,6 +206,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         {
             GlobalStaticService.GlobalSourceArchiveFolderPath = SourceArchiveFolderPath;
             GlobalStaticService.GlobalTargetFolderAndArchiveFolderPaths = folerToArchiveFolder;
+            ConfigService.SaveKeyValue("SourceArchiveFolderPath", new DirectoryInfo(SourceArchiveFolderPath).Parent.FullName);
             //GlobalStaticService.GlobalTargetArchiveFolderPaths = TargetArchiveFolders.ToList();
         }
     }
