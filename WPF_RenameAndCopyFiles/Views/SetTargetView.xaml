@@ -17,6 +17,8 @@
     <Grid Margin="0,16,0,16">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -24,14 +26,22 @@
             <ColumnDefinition Width="16"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Left" Grid.Row="0" Margin="0,8">
+        <TextBlock Text="Add Target Folder Path" HorizontalAlignment="Left" Margin="0,0,0,8"/>
+
+        <TextBox HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding UserInputPath, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" x:Name="PathTextBox">
+            <TextBox.InputBindings>
+                <KeyBinding Command="{Binding Path=AddUserInputPathCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=PathTextBox}"/>
+            </TextBox.InputBindings>
+        </TextBox>
+        <Button Grid.Column="2" Grid.Row="1" Content="Add" HorizontalAlignment="Stretch" Command="{Binding AddUserInputPathCommand}"/>
+        <TextBlock HorizontalAlignment="Left" Grid.Row="2" Margin="0,8">
             <Run Text="Target Folder Path Count" />
             <Run Text="{Binding TargetFolders.Count,Mode=OneWay}"/>
         </TextBlock>
-        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding TargetFolders}" AutoGenerateColumns="False" IsReadOnly="True"
+        <DataGrid Grid.Row="3" Grid.Column="0" ItemsSource="{Binding TargetFolders}" AutoGenerateColumns="False" IsReadOnly="True"
                   SelectedItem="{Binding SelectedFolder}" SelectionMode="Single">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Root" Binding="{Binding Root}"/>
                 <!--<DataGridCheckBoxColumn Header="IsExist" Binding="{Binding Exists,Mode=OneWay}" IsReadOnly="True"/>-->
                 <DataGridTemplateColumn Header="IsExist">
                     <DataGridTemplateColumn.CellTemplate>
@@ -45,7 +55,7 @@
                 <DataGridTextColumn Header="Path" Binding="{Binding FullName}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="1" Grid.Column="2">
+        <StackPanel Grid.Row="3" Grid.Column="2">
             <Button Content="+" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" Margin="0,8"
                     Command="{Binding AddFolderCommand}"/>
             <Button Content="-" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" 

@@ -33,7 +33,15 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             set { SetProperty(ref _SelectedFolder, value); }
         }
 
+        private string _UserInputPath;
+        public string UserInputPath
+        {
+            get { return _UserInputPath; }
+            set { SetProperty(ref _UserInputPath, value); }
+        }
 
+        public DelegateCommand AddUserInputPathCommand { get; set; }
+        //public DelegateCommand UserInputPathEnterCommand { get; set; }
         public DelegateCommand AddFolderCommand { get; set; }
         public DelegateCommand RemoveFolderCommand { get; set; }
 
@@ -42,7 +50,25 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             TargetFolders = new ObservableCollection<DirectoryInfo>();
             AddFolderCommand = new DelegateCommand(AddFolder);
             RemoveFolderCommand = new DelegateCommand(RemoveFolder);
+            AddUserInputPathCommand = new DelegateCommand(addUserInputPath);
             getTargetFolderPathsFromConfig();
+        }
+
+
+        private void addUserInputPath()
+        {
+            if (string.IsNullOrEmpty(UserInputPath)) return;
+            try
+            {
+                DirectoryInfo directoryInfo = new DirectoryInfo(UserInputPath);
+                TargetFolders.Add(directoryInfo);
+                UserInputPath = String.Empty;
+            }
+            catch (Exception ex)
+            {
+                HandyControl.Controls.MessageBox.Show($"{UserInputPath} \nCannot be parsed to a directory folder.", "Fail to parse path", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
 
         private void RemoveFolder()
@@ -78,7 +104,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                 catch (Exception ex)
                 {
                     //Todo:Show Message pop up
-                    HandyControl.Controls.MessageBox.Show($"Path: {path}","Fail to parse path from config.",MessageBoxButton.OK,MessageBoxImage.Error);
+                    HandyControl.Controls.MessageBox.Show($"{path}\nCannot be parsed to a directory folder.","Fail to parse path from config",MessageBoxButton.OK,MessageBoxImage.Error);
                 }
             }
         }
