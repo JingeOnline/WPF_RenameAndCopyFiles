@@ -132,12 +132,10 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            //throw new NotImplementedException();
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            //throw new NotImplementedException();
             return true;
         }
 
