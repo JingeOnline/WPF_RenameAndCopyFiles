@@ -14,6 +14,7 @@ using System.Diagnostics;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using HandyControl.Controls;
 using System.Windows;
+using System.Collections;
 
 namespace WPF_RenameAndCopyFiles.ViewModels
 {
@@ -26,12 +27,19 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             set { SetProperty(ref _TargetFolders, value); }
         }
 
-        private DirectoryInfo _SelectedFolder;
-        public DirectoryInfo SelectedFolder
-        {
-            get { return _SelectedFolder; }
-            set { SetProperty(ref _SelectedFolder, value); }
-        }
+        //private DirectoryInfo _SelectedFolder;
+        //public DirectoryInfo SelectedFolder
+        //{
+        //    get { return _SelectedFolder; }
+        //    set { SetProperty(ref _SelectedFolder, value); }
+        //}
+
+        //private List<DirectoryInfo> _SelectedFolders;
+        //public List<DirectoryInfo> SelectedFolders
+        //{
+        //    get { return _SelectedFolders; }
+        //    set { SetProperty(ref _SelectedFolders, value); }
+        //}
 
         private string _UserInputPath;
         public string UserInputPath
@@ -43,13 +51,13 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         public DelegateCommand AddUserInputPathCommand { get; set; }
         //public DelegateCommand UserInputPathEnterCommand { get; set; }
         public DelegateCommand AddFolderCommand { get; set; }
-        public DelegateCommand RemoveFolderCommand { get; set; }
+        public DelegateCommand<Object> RemoveFolderCommand { get; set; }
 
         public SetTargetViewModel()
         {
             TargetFolders = new ObservableCollection<DirectoryInfo>();
             AddFolderCommand = new DelegateCommand(AddFolder);
-            RemoveFolderCommand = new DelegateCommand(RemoveFolder);
+            RemoveFolderCommand = new DelegateCommand<Object>(RemoveFolder);
             AddUserInputPathCommand = new DelegateCommand(addUserInputPath);
             getTargetFolderPathsFromConfig();
         }
@@ -71,23 +79,36 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         }
 
-        private void RemoveFolder()
+        /// <summary>
+        /// Get the user selected rows in the Gatagrid, then delete them.
+        /// </summary>
+        /// <param name="selectedItems"></param>
+        private void RemoveFolder(object selectedItems)
         {
-            TargetFolders.Remove(SelectedFolder);
+            IList objectList = selectedItems as IList;
+            List<DirectoryInfo> selectedDirectoryInfos = objectList.Cast<DirectoryInfo>().ToList();
+
+            foreach (DirectoryInfo directoryInfo in selectedDirectoryInfos)
+            {
+                TargetFolders.Remove(directoryInfo);
+            }
         }
 
         private void AddFolder()
         {
-            //throw new NotImplementedException();
             using (CommonOpenFileDialog dialog = new CommonOpenFileDialog())
             {
 
                 dialog.IsFolderPicker = true; //Select Folder Only
-                dialog.Multiselect = false;
+                dialog.Multiselect = true;
 
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    TargetFolders.Add(new DirectoryInfo(dialog.FileName));
+                    //TargetFolders.Add(new DirectoryInfo(dialog.FileName));
+                    foreach(string filePath in dialog.FileNames)
+                    {
+                        TargetFolders.Add(new DirectoryInfo(filePath));
+                    }
                 }
             }
         }
@@ -104,7 +125,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                 catch
                 {
                     //Todo:Show Message pop up
-                    HandyControl.Controls.MessageBox.Show($"{path}\nCannot be parsed to a directory folder.","Fail to parse path from config",MessageBoxButton.OK,MessageBoxImage.Error);
+                    HandyControl.Controls.MessageBox.Show($"{path}\nCannot be parsed to a directory folder.", "Fail to parse path from config", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

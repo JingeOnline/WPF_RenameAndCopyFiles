@@ -38,8 +38,7 @@
             <Run Text="Target Folder Path Count" />
             <Run Text="{Binding TargetFolders.Count,Mode=OneWay}"/>
         </TextBlock>
-        <DataGrid Grid.Row="3" Grid.Column="0" ItemsSource="{Binding TargetFolders}" AutoGenerateColumns="False" IsReadOnly="True"
-                  SelectedItem="{Binding SelectedFolder}" SelectionMode="Single">
+        <DataGrid Grid.Row="3" Grid.Column="0" ItemsSource="{Binding TargetFolders}" AutoGenerateColumns="False" IsReadOnly="True" x:Name="DataGrid_DirectoryInfo">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Root" Binding="{Binding Root}"/>
                 <!--<DataGridCheckBoxColumn Header="IsExist" Binding="{Binding Exists,Mode=OneWay}" IsReadOnly="True"/>-->
@@ -58,7 +57,8 @@
         <StackPanel Grid.Row="3" Grid.Column="2">
             <Button Content="+" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" Margin="0,8"
                     Command="{Binding AddFolderCommand}"/>
-            <Button Content="-" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" 
+            <Button Content="-" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0"
+                    CommandParameter="{Binding ElementName=DataGrid_DirectoryInfo,Path=SelectedItems}"
                     Command="{Binding RemoveFolderCommand}"/>
         </StackPanel>
     </Grid>
