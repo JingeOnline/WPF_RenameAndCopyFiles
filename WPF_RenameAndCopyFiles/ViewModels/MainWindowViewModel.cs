@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using WPF_RenameAndCopyFiles.Views;
 
 namespace WPF_RenameAndCopyFiles.ViewModels
 {
@@ -46,10 +47,10 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         {
             switch (StepIndex)
             {
-                case 0: _regionManager.RequestNavigate("ContentRegion", "SetSourceView"); break;
-                case 1: _regionManager.RequestNavigate("ContentRegion", "SetTargetView"); break;
-                case 2: _regionManager.RequestNavigate("ContentRegion", "ArchiveView"); break;
-                case 3: _regionManager.RequestNavigate("ContentRegion", "ExecuteView"); break;
+                case 0: _regionManager.RequestNavigate("ContentRegion", nameof(SetSourceView)); break;
+                case 1: _regionManager.RequestNavigate("ContentRegion", nameof(SetTargetView)); break;
+                case 2: _regionManager.RequestNavigate("ContentRegion", nameof(SetArchiveView)); break;
+                case 3: _regionManager.RequestNavigate("ContentRegion", nameof(ExecuteView)); break;
                     //case 3: _regionManager.RequestNavigate("ContentRegion", "RenameView"); break;
             }
         }

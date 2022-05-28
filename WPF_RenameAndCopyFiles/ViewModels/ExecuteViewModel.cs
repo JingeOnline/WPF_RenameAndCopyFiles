@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         public bool CanExecute
         {
             get { return _CanExecute; }
-            set { SetProperty(ref _CanExecute, true); }
+            set { SetProperty(ref _CanExecute, value); }
         }
 
         private bool _IsFinish1;
@@ -71,24 +72,29 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         public ExecuteViewModel()
         {
+            //ExecuteCommand = new DelegateCommand(execute).ObservesCanExecute(() => CanExecute);
+            ExecuteCommand = new DelegateCommand(async () => await execute()).ObservesCanExecute(() => CanExecute);
             CanExecute = true;
-            ExecuteCommand = new DelegateCommand(execute).ObservesCanExecute(() => CanExecute);
-            //ExecuteCommand = new DelegateCommand(async () => await execute()).ObservesCanExecute(() => CanExecute);
         }
 
-        private async void execute()
+        //private bool canExecute()
+        //{
+        //    //Debug.WriteLine(CanExecute);
+        //    return CanExecute;
+        //}
+
+        private async Task execute()
         {
-            await Task.Run(() =>
-            {
-                CanExecute = false;
-                moveTargetFileToArchive();
-                copyFileToTarget();
-                moveSourceFileToArchive();
-                CanExecute = true;
-            });
+
+            CanExecute = false;
+            await moveTargetFileToArchive();
+            await copyFileToTarget();
+            await moveSourceFileToArchive();
+            CanExecute = true;
+
         }
 
-        private void moveTargetFileToArchive()
+        private async Task moveTargetFileToArchive()
         {
             int index = 0;
             foreach (DirectoryInfo folder in GlobalStaticService.GlobalTargetFolders)
@@ -102,29 +108,26 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                     string arciveFilePath = Path.Combine(archiveFolderPath, fileName);
                     try
                     {
-                        File.Move(pair.Value, arciveFilePath);
+                        await Task.Run(() =>
+                        {
+                            File.Move(pair.Value, arciveFilePath);
+                        });
                     }
                     catch (Exception ex)
                     {
-                        App.Current.Dispatcher.Invoke((Action)delegate
-                        {
-                            Exception1.Add(ex);
-                        });
+                        Exception1.Add(ex);
                     }
 
+                    index++;
+                    ProgressBarValue1 = index * 100 / (GlobalStaticService.GlobalTargetFolders.Count * sourceFileToTargetFile.Count);
+                    //Debug.WriteLine("ProgressBarValue1=" + ProgressBarValue1);
                 }
-                index++;
-                if (sourceFileToTargetFile.Count != 0)
-                {
-                    ProgressBarValue1 = index / sourceFileToTargetFile.Count * 100;
-                }
-
             }
 
             IsFinish1 = true;
         }
 
-        private void copyFileToTarget()
+        private async Task copyFileToTarget()
         {
             int index = 0;
             foreach (DirectoryInfo folder in GlobalStaticService.GlobalTargetFolders)
@@ -134,27 +137,25 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                 {
                     try
                     {
-                        File.Copy(pair.Key, pair.Value);
+                        await Task.Run(() =>
+                        {
+                            File.Copy(pair.Key, pair.Value);
+                        });
                     }
                     catch (Exception ex)
                     {
-                        App.Current.Dispatcher.Invoke((Action)delegate
-                        {
-                            Exception2.Add(ex);
-                        });
+                        Exception2.Add(ex);
                     }
-                }
-                index++;
-                if (GlobalStaticService.GlobalTargetFolders.Count != 0)
-                {
-                    ProgressBarValue1 = index / GlobalStaticService.GlobalTargetFolders.Count * 100;
+                    index++;
+                    ProgressBarValue2 = index * 100 / (GlobalStaticService.GlobalTargetFolders.Count * sourceFileToTargetFile.Count);
+                    //Debug.WriteLine("ProgressBarValue2=" + ProgressBarValue2);
                 }
             }
             IsFinish2 = true;
         }
 
 
-        private void moveSourceFileToArchive()
+        private async Task moveSourceFileToArchive()
         {
             int index = 0;
             foreach (FileInfo file in GlobalStaticService.GlobalSourceFiles)
@@ -162,20 +163,18 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                 string archiveFilePath = Path.Combine(GlobalStaticService.GlobalSourceArchiveFolderPath, file.Name);
                 try
                 {
-                    File.Move(file.FullName, archiveFilePath);
+                    await Task.Run(() =>
+                    {
+                        File.Move(file.FullName, archiveFilePath);
+                    });
                 }
                 catch (Exception ex)
                 {
-                    App.Current.Dispatcher.Invoke((Action)delegate
-                    {
-                        Exception3.Add(ex);
-                    });
+                    Exception3.Add(ex);
                 }
                 index++;
-                if (GlobalStaticService.GlobalSourceFiles.Count != 0)
-                {
-                    ProgressBarValue1 = index / GlobalStaticService.GlobalSourceFiles.Count * 100;
-                }
+                ProgressBarValue3 = index * 100 / GlobalStaticService.GlobalSourceFiles.Count;
+                //Debug.WriteLine("ProgressBarValue3=" + ProgressBarValue3);
             }
             IsFinish3 = true;
         }

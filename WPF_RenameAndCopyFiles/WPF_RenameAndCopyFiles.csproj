@@ -61,12 +61,12 @@
     <Compile Include="Models\RenameFileModel.cs" />
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Services\GlobalStaticService.cs" />
-    <Compile Include="ViewModels\ArchiveViewModel.cs" />
+    <Compile Include="ViewModels\SetArchiveViewModel.cs" />
     <Compile Include="ViewModels\ExecuteViewModel.cs" />
     <Compile Include="ViewModels\SetSourceViewModel.cs" />
     <Compile Include="ViewModels\SetTargetViewModel.cs" />
-    <Compile Include="Views\ArchiveView.xaml.cs">
-      <DependentUpon>ArchiveView.xaml</DependentUpon>
+    <Compile Include="Views\SetArchiveView.xaml.cs">
+      <DependentUpon>SetArchiveView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ExecuteView.xaml.cs">
       <DependentUpon>ExecuteView.xaml</DependentUpon>
@@ -77,7 +77,7 @@
     <Compile Include="Views\SetTargetView.xaml.cs">
       <DependentUpon>SetTargetView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\ArchiveView.xaml">
+    <Page Include="Views\SetArchiveView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

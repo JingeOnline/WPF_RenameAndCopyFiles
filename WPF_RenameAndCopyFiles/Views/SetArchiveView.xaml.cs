@@ -18,9 +18,9 @@ namespace WPF_RenameAndCopyFiles.Views
     /// <summary>
     /// Interaction logic for CopyView.xaml
     /// </summary>
-    public partial class ArchiveView : UserControl
+    public partial class SetArchiveView : UserControl
     {
-        public ArchiveView()
+        public SetArchiveView()
         {
             InitializeComponent();
         }

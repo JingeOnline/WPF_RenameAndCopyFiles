@@ -15,7 +15,7 @@ using WPF_RenameAndCopyFiles.Services;
 
 namespace WPF_RenameAndCopyFiles.ViewModels
 {
-    public class ArchiveViewModel:BindableBase, INavigationAware
+    public class SetArchiveViewModel:BindableBase, INavigationAware
     {
         private string _SourceArchiveFolderPath;
         public string SourceArchiveFolderPath
@@ -92,7 +92,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         public DelegateCommand CreateFolderIfNotExistCommand { get; set; }
 
 
-        public ArchiveViewModel()
+        public SetArchiveViewModel()
         {
             SourceArchiveFolderPathEnterCommand = new DelegateCommand<string>(SourceArchiveFolderPathEnter);
             TargetArchiveFolderPathEnterCommand = new DelegateCommand<string>(TargetArchiveFolderPathEnter);

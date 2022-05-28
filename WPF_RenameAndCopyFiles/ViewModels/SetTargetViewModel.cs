@@ -64,7 +64,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                 TargetFolders.Add(directoryInfo);
                 UserInputPath = String.Empty;
             }
-            catch (Exception ex)
+            catch
             {
                 HandyControl.Controls.MessageBox.Show($"{UserInputPath} \nCannot be parsed to a directory folder.", "Fail to parse path", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -101,7 +101,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                 {
                     TargetFolders.Add(new DirectoryInfo(path));
                 }
-                catch (Exception ex)
+                catch
                 {
                     //Todo:Show Message pop up
                     HandyControl.Controls.MessageBox.Show($"{path}\nCannot be parsed to a directory folder.","Fail to parse path from config",MessageBoxButton.OK,MessageBoxImage.Error);
