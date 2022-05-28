@@ -27,6 +27,20 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             set { SetProperty(ref _TargetFolders, value); }
         }
 
+        private ObservableCollection<string> _TemplateNames;
+        public ObservableCollection<string> TemplateNames
+        {
+            get { return _TemplateNames; }
+            set { SetProperty(ref _TemplateNames, value); }
+        }
+
+        private string _SelectedTemplate;
+        public string SelectedTemplate
+        {
+            get { return _SelectedTemplate; }
+            set { SetProperty(ref _SelectedTemplate, value); getTargetFolderPathsFromConfig(); }
+        }
+
         //private DirectoryInfo _SelectedFolder;
         //public DirectoryInfo SelectedFolder
         //{
@@ -59,9 +73,17 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             AddFolderCommand = new DelegateCommand(AddFolder);
             RemoveFolderCommand = new DelegateCommand<Object>(RemoveFolder);
             AddUserInputPathCommand = new DelegateCommand(addUserInputPath);
-            getTargetFolderPathsFromConfig();
+            //getTargetFolderPathsFromConfig();
+            getTemplate();
         }
 
+        private void getTemplate()
+        {
+            List<string> templates = ConfigService.GetKeyMiddleNamesBySearchKeys("TargetFolderPath");
+            //templates.Insert(0, "None");
+            templates.Add("None");
+            TemplateNames = new ObservableCollection<string>(templates);
+        }
 
         private void addUserInputPath()
         {
@@ -105,7 +127,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     //TargetFolders.Add(new DirectoryInfo(dialog.FileName));
-                    foreach(string filePath in dialog.FileNames)
+                    foreach (string filePath in dialog.FileNames)
                     {
                         TargetFolders.Add(new DirectoryInfo(filePath));
                     }
@@ -115,7 +137,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         private void getTargetFolderPathsFromConfig()
         {
-            IEnumerable<string> paths = ConfigService.GetValueBySearchKeys("TargetFolderPath");
+            List<string> paths = ConfigService.GetValueBySearchKeys("TargetFolderPath"+"-"+SelectedTemplate);
+            TargetFolders.Clear();
             foreach (string path in paths)
             {
                 try
@@ -144,12 +167,12 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             GlobalStaticService.GlobalTargetFolders = TargetFolders.ToList();
 
             //Save to config
-            ConfigService.ClearKeysBySearch("TargetFolderPath");
-            for (int i = 0; i < TargetFolders.Count; i++)
-            {
-                int index = i + 1;
-                ConfigService.CreatKeyValue("TargetFolderPath_" + index, TargetFolders[i].FullName);
-            }
+            //ConfigService.ClearKeysBySearch("TargetFolderPath");
+            //for (int i = 0; i < TargetFolders.Count; i++)
+            //{
+            //    int index = i + 1;
+            //    ConfigService.CreatKeyValue("TargetFolderPath_" + index, TargetFolders[i].FullName);
+            //}
         }
     }
 }

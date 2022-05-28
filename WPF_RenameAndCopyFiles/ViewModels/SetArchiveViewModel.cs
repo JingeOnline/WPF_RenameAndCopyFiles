@@ -198,7 +198,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            return true;
+            return false;
         }
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
