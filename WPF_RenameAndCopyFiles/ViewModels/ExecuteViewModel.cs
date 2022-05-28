@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WPF_RenameAndCopyFiles.Services;
 
 
@@ -18,6 +19,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
     public class ExecuteViewModel : BindableBase
     {
         public DelegateCommand ExecuteCommand { get; set; }
+        public DelegateCommand ExitCommand { get; set; }
 
         private bool _CanExecute;
         public bool CanExecute
@@ -25,6 +27,14 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             get { return _CanExecute; }
             set { SetProperty(ref _CanExecute, value); }
         }
+
+        private bool _IsDone;
+        public bool IsDone
+        {
+            get { return _IsDone; }
+            set { SetProperty(ref _IsDone, value); }
+        }
+
 
         private bool _IsFinish1;
         public bool IsFinish1
@@ -74,7 +84,15 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         {
             //ExecuteCommand = new DelegateCommand(execute).ObservesCanExecute(() => CanExecute);
             ExecuteCommand = new DelegateCommand(async () => await execute()).ObservesCanExecute(() => CanExecute);
+            //ExecuteCommand = new DelegateCommand(async () => await execute());
+            ExitCommand = new DelegateCommand(exit);
             CanExecute = true;
+            IsDone = false;
+        }
+
+        private void exit()
+        {
+            Application.Current.Shutdown();
         }
 
         //private bool canExecute()
@@ -90,7 +108,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             await moveTargetFileToArchive();
             await copyFileToTarget();
             await moveSourceFileToArchive();
-            CanExecute = true;
+            IsDone = true;
+            //CanExecute = true;
 
         }
 
