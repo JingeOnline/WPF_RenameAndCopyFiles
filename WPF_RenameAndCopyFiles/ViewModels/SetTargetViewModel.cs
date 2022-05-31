@@ -15,6 +15,8 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using HandyControl.Controls;
 using System.Windows;
 using System.Collections;
+using Prism.Events;
+using WPF_RenameAndCopyFiles.Events;
 
 namespace WPF_RenameAndCopyFiles.ViewModels
 {
@@ -66,12 +68,15 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         //public DelegateCommand UserInputPathEnterCommand { get; set; }
         public DelegateCommand AddFolderCommand { get; set; }
         public DelegateCommand<Object> RemoveFolderCommand { get; set; }
+        private IEventAggregator _eventAggregator;
 
-        public SetTargetViewModel()
+
+        public SetTargetViewModel(IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             TargetFolders = new ObservableCollection<DirectoryInfo>();
             AddFolderCommand = new DelegateCommand(AddFolder);
-            RemoveFolderCommand = new DelegateCommand<Object>(RemoveFolder);
+            RemoveFolderCommand = new DelegateCommand<object>(RemoveFolder);
             AddUserInputPathCommand = new DelegateCommand(addUserInputPath);
             //getTargetFolderPathsFromConfig();
             getTemplate();
@@ -135,22 +140,38 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             }
         }
 
-        private void getTargetFolderPathsFromConfig()
+        private async void getTargetFolderPathsFromConfig()
         {
-            List<string> paths = ConfigService.GetValueBySearchKeys("TargetFolderPath"+"-"+SelectedTemplate);
+            //Turn on the loading animation
+            _eventAggregator.GetEvent<LoadingOverlayEvent>().Publish(true);
+            List<string> paths = ConfigService.GetValueBySearchKeys("TargetFolderPath" + "-" + SelectedTemplate);
             TargetFolders.Clear();
             foreach (string path in paths)
             {
                 try
                 {
-                    TargetFolders.Add(new DirectoryInfo(path));
+                    DirectoryInfo di = null;
+                    await Task.Run(() =>
+                    {
+                        di = new DirectoryInfo(path);
+                        //pre-run the file exist check, otherwise it will check at UI thread at the next step.
+                        bool isExist = di.Exists;
+                    });
+                    if (di != null)
+                    {
+                        TargetFolders.Add(di);
+                    }
+
                 }
-                catch
+                catch (Exception ex)
                 {
-                    //Todo:Show Message pop up
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
                     HandyControl.Controls.MessageBox.Show($"{path}\nCannot be parsed to a directory folder.", "Fail to parse path from config", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            //Turn off the loading animation
+            _eventAggregator.GetEvent<LoadingOverlayEvent>().Publish(false);
         }
 
         public void OnNavigatedTo(NavigationContext navigationContext)

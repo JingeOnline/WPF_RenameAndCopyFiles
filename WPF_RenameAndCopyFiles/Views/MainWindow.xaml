@@ -30,6 +30,8 @@
                     CommandParameter="{Binding ElementName=MyStepBar}" 
                     Content="Next" Width="100" HorizontalAlignment="Right"/>
         </Grid>
-        
+        <Grid Grid.RowSpan="3" Background="Transparent" Visibility="{Binding IsLoading,Converter={StaticResource Boolean2VisibilityConverter}}">
+            <hc:LoadingCircle  Width="120" Height="120" Style="{StaticResource LoadingCircleLarge}"/>
+        </Grid>
     </Grid>
 </Window>

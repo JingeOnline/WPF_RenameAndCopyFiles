@@ -35,17 +35,20 @@
             <Run Text="Files Count" />
             <Run Text="{Binding Files.Count,Mode=OneWay}"/>
         </TextBlock>
-        <DataGrid Grid.Row="4" Grid.Column="0" ItemsSource="{Binding Files}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+        <DataGrid Grid.Row="4" Grid.Column="0" ItemsSource="{Binding Files}" AutoGenerateColumns="False" IsReadOnly="True"
+                  x:Name="DataGrid_FileInfo">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="LastWriteTime" Binding="{Binding LastWriteTime}"/>
                 <DataGridTextColumn Header="Size" Binding="{Binding Length}"/>
-                <DataGridTextColumn Header="Path" Binding="{Binding FullName}"/>
+                <DataGridTextColumn Header="Path" Binding="{Binding FullName}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Row="4" Grid.Column="2">
-            <Button Content="+" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" Margin="0,8"/>
-            <Button Content="-" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0"/>
+            <Button Content="+" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" Margin="0,8"
+                    Command="{Binding AddFilesCommand}"/>
+            <Button Content="-" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0"
+                    Command="{Binding RemoveFilesCommand}" CommandParameter="{Binding ElementName=DataGrid_FileInfo,Path=SelectedItems}"/>
         </StackPanel>
     </Grid>
 </UserControl>

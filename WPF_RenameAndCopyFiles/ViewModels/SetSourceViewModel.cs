@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using Prism.Regions;
 using WPF_RenameAndCopyFiles.Services;
 using System.Windows;
+using System.Collections;
 
 namespace WPF_RenameAndCopyFiles.ViewModels
 {
@@ -55,6 +56,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         public DelegateCommand SelectFolderCommand { get; set; }
         public DelegateCommand<string> SourceFolderPathEnterCommand { get; set; }
+        public DelegateCommand AddFilesCommand { get; set; }
+        public DelegateCommand<Object> RemoveFilesCommand { get; set; }
 
 
         public SetSourceViewModel()
@@ -62,6 +65,42 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             SourceFolderPath=ConfigurationManager.AppSettings["SourceFolderPath"];
             SelectFolderCommand = new DelegateCommand(selectFolder);
             SourceFolderPathEnterCommand = new DelegateCommand<string>(SourceFolderPathEnter);
+            AddFilesCommand = new DelegateCommand(addFiles);
+            RemoveFilesCommand = new DelegateCommand<object>(removeFiles);
+        }
+
+        private void removeFiles(object selectedItems)
+        {
+            IList objectList = selectedItems as IList;
+            List<FileInfo> selectedDirectoryInfos = objectList.Cast<FileInfo>().ToList();
+
+            foreach (FileInfo fileInfo in selectedDirectoryInfos)
+            {
+                Files.Remove(fileInfo);
+            }
+        }
+
+        private void addFiles()
+        {
+            using (CommonOpenFileDialog dialog = new CommonOpenFileDialog())
+            {
+                dialog.IsFolderPicker = false;
+                dialog.Multiselect = true;
+                string initialDir= ConfigurationManager.AppSettings["FilePickerDefaultPath"];
+                if (!string.IsNullOrEmpty(initialDir))
+                {
+                    dialog.InitialDirectory = initialDir;
+                }
+                
+
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    foreach (string filePath in dialog.FileNames)
+                    {
+                        Files.Add(new FileInfo(filePath));
+                    }
+                }
+            }
         }
 
         private void SourceFolderPathEnter(string path)
