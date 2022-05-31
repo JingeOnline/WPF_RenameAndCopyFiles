@@ -45,6 +45,13 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             set { SetProperty(ref _TargetArchiveFolderPathError, value); }
         }
 
+        private bool _IsSourceNeedArchive;
+        public bool IsSourceNeedArchive
+        {
+            get { return _IsSourceNeedArchive; }
+            set { SetProperty(ref _IsSourceNeedArchive, value); }
+        }
+
         public Dictionary<string, string> folerToArchiveFolder { get; set; } = new Dictionary<string, string>();
 
         public Visibility SourcePathErrorVisibility
@@ -113,7 +120,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         private async void creatFolderIfNotExist()
         {
             DirectoryInfo sourceFolder = new DirectoryInfo(SourceArchiveFolderPath);
-            if (!sourceFolder.Exists)
+            if (!sourceFolder.Exists && IsSourceNeedArchive)
             {
                 Directory.CreateDirectory(SourceArchiveFolderPath);
             }
@@ -205,6 +212,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         {
             GlobalStaticService.GlobalSourceArchiveFolderPath = SourceArchiveFolderPath;
             GlobalStaticService.GlobalTargetFolderAndArchiveFolderPaths = folerToArchiveFolder;
+            GlobalStaticService.IsSourceNeedArchive = IsSourceNeedArchive;
+
             ConfigService.SaveKeyValue("SourceArchiveFolderPath", new DirectoryInfo(SourceArchiveFolderPath).Parent.FullName);
             //GlobalStaticService.GlobalTargetArchiveFolderPaths = TargetArchiveFolders.ToList();
         }

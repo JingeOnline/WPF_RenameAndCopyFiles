@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +17,7 @@ using WPF_RenameAndCopyFiles.Services;
 
 namespace WPF_RenameAndCopyFiles.ViewModels
 {
-    public class ExecuteViewModel : BindableBase
+    public class ExecuteViewModel : BindableBase, INavigationAware
     {
         public DelegateCommand ExecuteCommand { get; set; }
         public DelegateCommand ExitCommand { get; set; }
@@ -76,6 +77,12 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             get { return _ProgressBarValue3; }
             set { SetProperty(ref _ProgressBarValue3, value); }
         }
+        private bool _IsSourceNeedArchive;
+        public bool IsSourceNeedArchive
+        {
+            get { return _IsSourceNeedArchive; }
+            set { SetProperty(ref _IsSourceNeedArchive, value); }
+        }
         public ObservableCollection<Exception> Exception1 { get; set; } = new ObservableCollection<Exception>();
         public ObservableCollection<Exception> Exception2 { get; set; } = new ObservableCollection<Exception>();
         public ObservableCollection<Exception> Exception3 { get; set; } = new ObservableCollection<Exception>();
@@ -88,6 +95,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             ExitCommand = new DelegateCommand(exit);
             CanExecute = true;
             IsDone = false;
+            IsSourceNeedArchive = GlobalStaticService.IsSourceNeedArchive;
         }
 
         private void exit()
@@ -107,7 +115,10 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             CanExecute = false;
             await moveTargetFileToArchive();
             await copyFileToTarget();
-            await moveSourceFileToArchive();
+            if (IsSourceNeedArchive)
+            {
+                await moveSourceFileToArchive();
+            }
             IsDone = true;
             //CanExecute = true;
 
@@ -210,5 +221,20 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             return sourceFileToTargetFile;
         }
 
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            //throw new NotImplementedException();
+            return false;
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            //throw new NotImplementedException();
+        }
     }
 }

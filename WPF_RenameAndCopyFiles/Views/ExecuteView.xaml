@@ -81,7 +81,8 @@
                 </Grid>
             </Border>
 
-            <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="8" Margin="8,8" Grid.Row="2">
+            <Border Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="8" Margin="8,8" Grid.Row="2"
+                    Visibility="{Binding IsSourceNeedArchive,Converter={StaticResource Boolean2VisibilityConverter}}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>

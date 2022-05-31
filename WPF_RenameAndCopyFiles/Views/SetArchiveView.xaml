@@ -6,10 +6,11 @@
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              xmlns:converters="clr-namespace:WPF_RenameAndCopyFiles.Converters"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:local="clr-namespace:WPF_RenameAndCopyFiles.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
     <UserControl.Resources>
         <converters:BoolToColorConverter x:Key="bool2color"/>
     </UserControl.Resources>
@@ -19,7 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <!--<RowDefinition Height="auto"/>-->
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -31,25 +32,39 @@
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <!--Source-->
-        <TextBlock Text="Source file archive folder" HorizontalAlignment="Left" Margin="0,0,0,8"/>
-        <TextBox HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding SourceArchiveFolderPath, Mode=TwoWay}" x:Name="SourceTextBox">
-            <TextBox.InputBindings>
-                <KeyBinding Command="{Binding Path=SourceArchiveFolderPathEnterCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=SourceTextBox}"/>
-            </TextBox.InputBindings>
-        </TextBox>
-        <Button Grid.Column="2" Grid.Row="1" Content="Select" HorizontalAlignment="Stretch" Command="{Binding SelectSourceFolderCommand}"/>
-        <TextBlock Text="{Binding SourceArchiveFolderPathError}" Foreground="Red" Grid.Row="2" Visibility="{Binding SourcePathErrorVisibility,Mode=OneWay}"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="0,8,0,8">
+            <TextBlock Text="Source file archive folder" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
+            <ToggleButton  Style="{StaticResource ToggleButtonSwitch}" x:Name="ToggleButton_ArchiveSource" 
+                           Margin="16,0,0,0" VerticalAlignment="Center" Height="14" IsChecked="{Binding IsSourceNeedArchive,Mode=TwoWay}"/>
+            <TextBlock Text="On" VerticalAlignment="Center"
+                       Visibility="{Binding ElementName=ToggleButton_ArchiveSource,Path=IsChecked, Converter={StaticResource Boolean2VisibilityConverter}}"/>
+            <TextBlock Text="Off" VerticalAlignment="Center"
+                       Visibility="{Binding ElementName=ToggleButton_ArchiveSource,Path=IsChecked, Converter={StaticResource Boolean2VisibilityReConverter}}"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Visibility="{Binding ElementName=ToggleButton_ArchiveSource,Path=IsChecked, Converter={StaticResource Boolean2VisibilityConverter}}">
+            <TextBox HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding SourceArchiveFolderPath, Mode=TwoWay}" x:Name="SourceTextBox"
+                 Visibility="{Binding ElementName=ToggleButton_ArchiveSource,Path=IsChecked, Converter={StaticResource Boolean2VisibilityConverter}}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding Path=SourceArchiveFolderPathEnterCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=SourceTextBox}"/>
+                </TextBox.InputBindings>
+            </TextBox>
+            <TextBlock Text="{Binding SourceArchiveFolderPathError}" Foreground="Red" Grid.Row="2" Margin="0,4"
+                       Visibility="{Binding SourcePathErrorVisibility,Mode=OneWay}"/>
+        </StackPanel>
+        <Button Grid.Column="2" Grid.Row="1" Content="Select" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                Command="{Binding SelectSourceFolderCommand}"
+                Visibility="{Binding ElementName=ToggleButton_ArchiveSource,Path=IsChecked, Converter={StaticResource Boolean2VisibilityConverter}}"/>
         <!--Target-->
-        <TextBlock Text="Target file archive folder" HorizontalAlignment="Left" Margin="0,16,0,8" Grid.Row="3"/>
-        <TextBox HorizontalAlignment="Stretch" Grid.Row="4" Text="{Binding TargetArchiveFolderPath, Mode=TwoWay}" x:Name="TargetTextBox">
+        <TextBlock Text="Target file archive folder" HorizontalAlignment="Left" Margin="0,16,0,8" Grid.Row="2"/>
+        <TextBox HorizontalAlignment="Stretch" Grid.Row="3" Text="{Binding TargetArchiveFolderPath, Mode=TwoWay}" x:Name="TargetTextBox">
             <TextBox.InputBindings>
                 <KeyBinding Command="{Binding Path=TargetArchiveFolderPathEnterCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=TargetTextBox}"/>
             </TextBox.InputBindings>
         </TextBox>
-        <Button Grid.Column="2" Grid.Row="4" Content="Select" HorizontalAlignment="Stretch" Command="{Binding SelectTargetFolderCommand}"/>
-        <TextBlock Text="{Binding TargetArchiveFolderPathError}" Foreground="Red" Grid.Row="5" Visibility="{Binding TargetPathErrorVisibility,Mode=OneWay}"/>
+        <Button Grid.Column="2" Grid.Row="3" Content="Select" HorizontalAlignment="Stretch" Command="{Binding SelectTargetFolderCommand}"/>
+        <TextBlock Text="{Binding TargetArchiveFolderPathError}" Foreground="Red" Grid.Row="4" Visibility="{Binding TargetPathErrorVisibility,Mode=OneWay}"/>
 
-        <DataGrid Grid.Row="6" Grid.Column="0" ItemsSource="{Binding TargetArchiveFolders}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" Margin="0,16,0,0">
+        <DataGrid Grid.Row="5" Grid.Column="0" ItemsSource="{Binding TargetArchiveFolders}" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" Margin="0,16,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Root" Binding="{Binding Root}"/>
                 <!--<DataGridCheckBoxColumn Header="IsExist" Binding="{Binding Exists,Mode=OneWay}" IsReadOnly="True"/>-->
@@ -65,7 +80,7 @@
                 <DataGridTextColumn Header="Path" Binding="{Binding FullName}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="6" Grid.Column="2" Margin="0,16,0,0">
+        <StackPanel Grid.Row="5" Grid.Column="2" Margin="0,16,0,0">
             <Button Content="Create" HorizontalAlignment="Stretch" Command="{Binding CreateFolderIfNotExistCommand}"
                     ToolTip="Create folder if not exist."/>
         </StackPanel>

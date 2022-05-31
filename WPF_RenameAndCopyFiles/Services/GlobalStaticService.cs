@@ -15,5 +15,6 @@ namespace WPF_RenameAndCopyFiles.Services
         public static string GlobalSourceFolderPath;
         public static string GlobalSourceArchiveFolderPath;
         public static Dictionary<string,string> GlobalTargetFolderAndArchiveFolderPaths;
+        public static bool IsSourceNeedArchive;
     }
 }
