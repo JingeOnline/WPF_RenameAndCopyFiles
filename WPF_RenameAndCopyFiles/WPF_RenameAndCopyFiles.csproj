@@ -76,6 +76,8 @@
     </ApplicationDefinition>
     <Compile Include="Converters\BoolToColorConverter.cs" />
     <Compile Include="Events\LoadingOverlayEvent.cs" />
+    <Compile Include="Helpers\FileDragDropHelper.cs" />
+    <Compile Include="Helpers\IFileDragDropTarget.cs" />
     <Compile Include="Models\CopyFileModel.cs" />
     <Compile Include="Models\RenameFileModel.cs" />
     <Compile Include="Services\ConfigService.cs" />

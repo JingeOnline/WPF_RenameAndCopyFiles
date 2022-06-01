@@ -13,10 +13,11 @@ using Prism.Regions;
 using WPF_RenameAndCopyFiles.Services;
 using System.Windows;
 using System.Collections;
+using WPF_RenameAndCopyFiles.Helpers;
 
 namespace WPF_RenameAndCopyFiles.ViewModels
 {
-    public class SetSourceViewModel : BindableBase, INavigationAware
+    public class SetSourceViewModel : BindableBase, INavigationAware, IFileDragDropTarget
     {
         private ObservableCollection<FileInfo> _Files;
         public ObservableCollection<FileInfo> Files
@@ -161,6 +162,15 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             //Save to config
             ConfigService.SaveKeyValue("SourceFolderPath",SourceFolderPath);
 
+        }
+
+        //User drag files drop to the DataGrid
+        public void OnFileDrop(string[] filepaths)
+        {
+            foreach (string filePath in filepaths)
+            {
+                Files.Add(new FileInfo(filePath));
+            }
         }
     }
 }

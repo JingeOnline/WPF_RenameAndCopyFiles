@@ -7,9 +7,10 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:local="clr-namespace:WPF_RenameAndCopyFiles.Views"
+             xmlns:Helpers="clr-namespace:WPF_RenameAndCopyFiles.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="0,16,0,16">
+    <Grid Margin="0,16,0,16" >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -36,7 +37,8 @@
             <Run Text="{Binding Files.Count,Mode=OneWay}"/>
         </TextBlock>
         <DataGrid Grid.Row="4" Grid.Column="0" ItemsSource="{Binding Files}" AutoGenerateColumns="False" IsReadOnly="True"
-                  x:Name="DataGrid_FileInfo">
+                  x:Name="DataGrid_FileInfo"
+                  AllowDrop="True" Helpers:FileDragDropHelper.IsFileDragDropEnabled="True" Helpers:FileDragDropHelper.FileDragDropTarget="{Binding}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="LastWriteTime" Binding="{Binding LastWriteTime}"/>
