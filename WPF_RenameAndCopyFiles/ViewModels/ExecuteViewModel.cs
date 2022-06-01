@@ -212,10 +212,21 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         private Dictionary<string, string> getTargetFilePaths(string targetFolderPath)
         {
             Dictionary<string, string> sourceFileToTargetFile = new Dictionary<string, string>();
+            
+            //**This function allow user put folder in the updateSource folder,
+            //but when user doesn't set the source folder path, it will run into bug.
+            //foreach (FileInfo file in GlobalStaticService.GlobalSourceFiles)
+            //{
+            //    string relativePath = file.FullName.Substring(GlobalStaticService.GlobalSourceFolderPath.Length);
+            //    string path = Path.Combine(targetFolderPath, relativePath.TrimStart('\\', '/'));
+            //    sourceFileToTargetFile[file.FullName] = path;
+            //}
+            //
+
+            //This function just map source file to target folder files, easy to understand.
             foreach (FileInfo file in GlobalStaticService.GlobalSourceFiles)
             {
-                string relativePath = file.FullName.Substring(GlobalStaticService.GlobalSourceFolderPath.Length);
-                string path = Path.Combine(targetFolderPath, relativePath.TrimStart('\\', '/'));
+                string path = Path.Combine(targetFolderPath, file.Name);
                 sourceFileToTargetFile[file.FullName] = path;
             }
             return sourceFileToTargetFile;
