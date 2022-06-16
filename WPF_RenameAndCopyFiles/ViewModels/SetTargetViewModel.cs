@@ -144,7 +144,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         {
             //Turn on the loading animation
             _eventAggregator.GetEvent<LoadingOverlayEvent>().Publish(true);
-            List<string> paths = ConfigService.GetValueBySearchKeys("TargetFolderPath" + "-" + SelectedTemplate);
+            //List<string> paths = ConfigService.GetValueBySearchKeys("TargetFolderPath" + "-" + SelectedTemplate);
+            List<string> paths = ConfigService.GetValueBySearchKeys(SelectedTemplate);
             TargetFolders.Clear();
             foreach (string path in paths)
             {
