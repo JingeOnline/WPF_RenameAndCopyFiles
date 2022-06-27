@@ -27,7 +27,7 @@
             <ColumnDefinition Width="16"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Add Target Folder Path" HorizontalAlignment="Left" Margin="0,0,0,8"/>
+        <TextBlock Text="Add Target Folder Path" HorizontalAlignment="Left" Margin="0,8,0,8"/>
 
         <TextBox HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding UserInputPath, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" x:Name="PathTextBox">
             <TextBox.InputBindings>
@@ -55,10 +55,13 @@
                 <DataGridTextColumn Header="Path" Binding="{Binding FullName}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
+        <hc:ComboBox ItemsSource="{Binding TemplateNames}" SelectedItem="{Binding SelectedTemplate,Mode=TwoWay}" Margin="0,8,8,0"
+                      ToolTip="Select a template"  hc:InfoElement.Placeholder="Template-None"
+                     Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Width="180"/>
         <StackPanel Grid.Row="3" Grid.Column="2">
-            <hc:ComboBox ItemsSource="{Binding TemplateNames}" SelectedItem="{Binding SelectedTemplate,Mode=TwoWay}" Margin="0,0,0,16"
-                      ToolTip="Select a template"  hc:InfoElement.Placeholder="Template-None"/>
-            <Button Content="+" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" Margin="0,8"
+            <!--<hc:ComboBox ItemsSource="{Binding TemplateNames}" SelectedItem="{Binding SelectedTemplate,Mode=TwoWay}" Margin="0,0,0,16"
+                      ToolTip="Select a template"  hc:InfoElement.Placeholder="Template-None"/>-->
+            <Button Content="+" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0" Margin="0,0,0,8"
                     Command="{Binding AddFolderCommand}"/>
             <Button Content="-" HorizontalAlignment="Left" FontWeight="ExtraBlack" Width="32" FontSize="18" Padding="0"
                     CommandParameter="{Binding ElementName=DataGrid_DirectoryInfo,Path=SelectedItems}"

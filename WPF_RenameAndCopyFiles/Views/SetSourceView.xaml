@@ -23,15 +23,27 @@
             <ColumnDefinition Width="16"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Please select source folder" HorizontalAlignment="Left" Margin="0,0,0,8"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="0,8,0,8">
+        <TextBlock Text="Select source folder" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <ToggleButton  Style="{StaticResource ToggleButtonSwitch}" x:Name="ToggleButton_SelectSourceFolder" 
+                           Margin="16,0,0,0" VerticalAlignment="Center" Height="14"/>
+            <TextBlock Text="On" VerticalAlignment="Center"
+                       Visibility="{Binding ElementName=ToggleButton_SelectSourceFolder,Path=IsChecked, Converter={StaticResource Boolean2VisibilityConverter}}"/>
+            <TextBlock Text="Off" VerticalAlignment="Center"
+                       Visibility="{Binding ElementName=ToggleButton_SelectSourceFolder,Path=IsChecked, Converter={StaticResource Boolean2VisibilityReConverter}}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Visibility="{Binding ElementName=ToggleButton_SelectSourceFolder,Path=IsChecked, Converter={StaticResource Boolean2VisibilityConverter}}">
+            <TextBox HorizontalAlignment="Stretch"  Text="{Binding SourceFolderPath, Mode=TwoWay,UpdateSourceTrigger=LostFocus}" x:Name="PathTextBox">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding Path=SourceFolderPathEnterCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=PathTextBox}"/>
+                </TextBox.InputBindings>
+            </TextBox>
+            <TextBlock Text="{Binding SourceFolderPathError}" Foreground="Red" Grid.Row="2" Visibility="{Binding ErrorVisibility,Mode=OneWay}"/>
+        </StackPanel>
 
-        <TextBox HorizontalAlignment="Stretch" Grid.Row="1" Text="{Binding SourceFolderPath, Mode=TwoWay,UpdateSourceTrigger=LostFocus}" x:Name="PathTextBox">
-            <TextBox.InputBindings>
-                <KeyBinding Command="{Binding Path=SourceFolderPathEnterCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=PathTextBox}"/>
-            </TextBox.InputBindings>
-        </TextBox>
-        <TextBlock Text="{Binding SourceFolderPathError}" Foreground="Red" Grid.Row="2" Visibility="{Binding ErrorVisibility,Mode=OneWay}"/>
-        <Button Grid.Column="2" Grid.Row="1" Content="Select" HorizontalAlignment="Stretch" Command="{Binding SelectFolderCommand}"/>
+        <Button Grid.Column="2" Grid.Row="1" Content="Select" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                Visibility="{Binding ElementName=ToggleButton_SelectSourceFolder,Path=IsChecked, Converter={StaticResource Boolean2VisibilityConverter}}"
+                Command="{Binding SelectFolderCommand}"/>
         <TextBlock HorizontalAlignment="Left" Grid.Row="3" Margin="0,8">
             <Run Text="Files Count" />
             <Run Text="{Binding Files.Count,Mode=OneWay}"/>

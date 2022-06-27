@@ -55,6 +55,13 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             }
         }
 
+        //private bool _IsSelectSourceFolder;
+        //public bool IsSelectSourceFolder
+        //{
+        //    get { return _IsSelectSourceFolder; }
+        //    set { SetProperty(ref _IsSelectSourceFolder, value); }
+        //}
+
         public DelegateCommand SelectFolderCommand { get; set; }
         public DelegateCommand<string> SourceFolderPathEnterCommand { get; set; }
         public DelegateCommand AddFilesCommand { get; set; }

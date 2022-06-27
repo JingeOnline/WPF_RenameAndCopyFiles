@@ -86,7 +86,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         {
             List<string> templates = ConfigService.GetKeyMiddleNamesBySearchKeys("TargetFolderPath");
             //templates.Insert(0, "None");
-            templates.Add("None");
+            //templates.Add("Template-None");
+            templates.Add("");
             TemplateNames = new ObservableCollection<string>(templates);
         }
 
@@ -142,6 +143,11 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         private async void getTargetFolderPathsFromConfig()
         {
+            if (String.IsNullOrEmpty(SelectedTemplate))
+            {
+                TargetFolders.Clear();
+                return;
+            }
             //Turn on the loading animation
             _eventAggregator.GetEvent<LoadingOverlayEvent>().Publish(true);
             //List<string> paths = ConfigService.GetValueBySearchKeys("TargetFolderPath" + "-" + SelectedTemplate);
