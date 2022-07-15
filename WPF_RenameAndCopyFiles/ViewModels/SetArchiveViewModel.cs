@@ -15,7 +15,7 @@ using WPF_RenameAndCopyFiles.Services;
 
 namespace WPF_RenameAndCopyFiles.ViewModels
 {
-    public class SetArchiveViewModel:BindableBase, INavigationAware
+    public class SetArchiveViewModel : BindableBase, INavigationAware
     {
         private string _SourceArchiveFolderPath;
         public string SourceArchiveFolderPath
@@ -106,10 +106,10 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             SelectSourceFolderCommand = new DelegateCommand(SelectSourceArchiveFolder);
             SelectTargetFolderCommand = new DelegateCommand(SelectTargetArchiveFolder);
 
-            CreateFolderIfNotExistCommand = new DelegateCommand(creatFolderIfNotExist,canCreateFolderIfNotExist);
+            CreateFolderIfNotExistCommand = new DelegateCommand(creatFolderIfNotExist, canCreateFolderIfNotExist);
 
-            SourceArchiveFolderPath = ConfigurationManager.AppSettings["SourceArchiveFolderPath"] + "\\Backup " + DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
-            TargetArchiveFolderPath = ConfigurationManager.AppSettings["TargetArchiveFolderPath"]+"\\Backup "+DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
+            //SourceArchiveFolderPath = ConfigurationManager.AppSettings["SourceArchiveFolderPath"] + "\\Backup " + DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
+            //TargetArchiveFolderPath = ConfigurationManager.AppSettings["TargetArchiveFolderPath"]+"\\Backup "+DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
         }
 
         private bool canCreateFolderIfNotExist()
@@ -125,7 +125,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                 Directory.CreateDirectory(SourceArchiveFolderPath);
             }
 
-            foreach (DirectoryInfo folder in TargetArchiveFolders.Where(x=>x.Exists==false))
+            foreach (DirectoryInfo folder in TargetArchiveFolders.Where(x => x.Exists == false))
             {
                 Directory.CreateDirectory(folder.FullName);
             }
@@ -150,7 +150,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             DirectoryInfo sourceFolder = new DirectoryInfo(SourceArchiveFolderPath);
             if (!sourceFolder.Exists)
             {
-                SourceArchiveFolderPathError= "⬤ The source archive folder path is not exist.";
+                SourceArchiveFolderPathError = "⬤ The source archive folder path is not exist.";
             }
             else
             {
@@ -198,16 +198,27 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             SourceArchiveFolderPath = path;
         }
 
+        //Navigate into this page
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            
+            if (SourceArchiveFolderPath == null)
+            {
+                SourceArchiveFolderPath = ConfigurationManager.AppSettings["SourceArchiveFolderPath"] + "\\Backup " + DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
+            }
+            if (TargetArchiveFolderPath == null)
+            {
+                TargetArchiveFolderPath = ConfigurationManager.AppSettings["TargetArchiveFolderPath"] + "\\Backup " + DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
+            }
         }
 
+        //Return true for create a new instance, false for load an existing instance.
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            return false;
+            //return false;
+            return true;
         }
 
+        //Navigate out from this page
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             GlobalStaticService.GlobalSourceArchiveFolderPath = SourceArchiveFolderPath;
