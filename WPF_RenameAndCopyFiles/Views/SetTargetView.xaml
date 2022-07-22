@@ -35,10 +35,16 @@
             </TextBox.InputBindings>
         </TextBox>
         <Button Grid.Column="2" Grid.Row="1" Content="Add" HorizontalAlignment="Stretch" Command="{Binding AddUserInputPathCommand}"/>
-        <TextBlock HorizontalAlignment="Left" Grid.Row="2" Margin="0,8">
-            <Run Text="Target Folder Path Count" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.Row="2" Margin="0,8">
+            <TextBlock >
+            <Run Text="Target Folder Path Count " />
             <Run Text="{Binding TargetFolders.Count,Mode=OneWay}"/>
-        </TextBlock>
+            </TextBlock>
+            <TextBlock Margin="16,0,0,0" Foreground="Red" Visibility="{Binding TargetFolderNotExistCountVisibility,Mode=OneWay}">
+                <Run Text="Path Not Exist Count " />
+                <Run Text="{Binding TargetFolderNotExistCount,Mode=OneWay}"/>
+            </TextBlock>
+        </StackPanel>
         <DataGrid Grid.Row="3" Grid.Column="0" ItemsSource="{Binding TargetFolders}" AutoGenerateColumns="False" IsReadOnly="True" x:Name="DataGrid_DirectoryInfo">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Root" Binding="{Binding Root}"/>

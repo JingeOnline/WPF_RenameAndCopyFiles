@@ -29,6 +29,25 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             set { SetProperty(ref _TargetFolders, value); }
         }
 
+        private int _TargetFolderNotExistCount;
+        public int TargetFolderNotExistCount
+        {
+            get { return _TargetFolderNotExistCount; }
+            set
+            {
+                SetProperty(ref _TargetFolderNotExistCount, value);
+                RaisePropertyChanged(nameof(TargetFolderNotExistCountVisibility));
+            }
+        }
+
+        public Visibility TargetFolderNotExistCountVisibility
+        {
+            get
+            {
+                return TargetFolderNotExistCount > 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
         private ObservableCollection<string> _TemplateNames;
         public ObservableCollection<string> TemplateNames
         {
@@ -91,18 +110,32 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             TemplateNames = new ObservableCollection<string>(templates);
         }
 
-        private void addUserInputPath()
+        private async void addUserInputPath()
         {
             if (string.IsNullOrEmpty(UserInputPath)) return;
             try
             {
-                DirectoryInfo directoryInfo = new DirectoryInfo(UserInputPath);
-                TargetFolders.Add(directoryInfo);
-                UserInputPath = String.Empty;
+                _eventAggregator.GetEvent<LoadingOverlayEvent>().Publish(true);
+                DirectoryInfo di = null;
+                await Task.Run(() =>
+                {
+                    di = new DirectoryInfo(UserInputPath);
+                    //pre-run the file exist check, otherwise it will check at UI thread at the next step.
+                    bool isExist = di.Exists;
+                });
+                if (di != null)
+                {
+                    TargetFolders.Add(di);
+                    UserInputPath = String.Empty;
+                    TargetFolderNotExistCount = TargetFolders.Where(x => x.Exists == false).Count();
+                }
+
+                _eventAggregator.GetEvent<LoadingOverlayEvent>().Publish(false);
             }
             catch
             {
-                HandyControl.Controls.MessageBox.Show($"{UserInputPath} \nCannot be parsed to a directory folder.", "Fail to parse path", MessageBoxButton.OK, MessageBoxImage.Error);
+                _eventAggregator.GetEvent<LoadingOverlayEvent>().Publish(false);
+                HandyControl.Controls.MessageBox.Show($"\"{UserInputPath}\"\nCannot be parsed to a directory folder.", "Fail to parse path", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
@@ -174,9 +207,10 @@ namespace WPF_RenameAndCopyFiles.ViewModels
                 {
                     Debug.WriteLine(ex.Message);
                     Debug.WriteLine(ex.StackTrace);
-                    HandyControl.Controls.MessageBox.Show($"{path}\nCannot be parsed to a directory folder.", "Fail to parse path from config", MessageBoxButton.OK, MessageBoxImage.Error);
+                    HandyControl.Controls.MessageBox.Show($"{path}\nCannot be parsed to a directory folder.", "Invalid Path", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            TargetFolderNotExistCount = TargetFolders.Where(x => x.Exists == false).Count();
             //Turn off the loading animation
             _eventAggregator.GetEvent<LoadingOverlayEvent>().Publish(false);
         }
