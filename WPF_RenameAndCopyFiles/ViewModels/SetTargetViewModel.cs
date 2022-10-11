@@ -153,6 +153,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             {
                 TargetFolders.Remove(directoryInfo);
             }
+            TargetFolderNotExistCount = TargetFolders.Where(x => x.Exists == false).Count();
         }
 
         private void AddFolder()
@@ -165,13 +166,13 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    //TargetFolders.Add(new DirectoryInfo(dialog.FileName));
                     foreach (string filePath in dialog.FileNames)
                     {
                         TargetFolders.Add(new DirectoryInfo(filePath));
                     }
                 }
             }
+            TargetFolderNotExistCount = TargetFolders.Where(x => x.Exists == false).Count();
         }
 
         private async void getTargetFolderPathsFromConfig()
