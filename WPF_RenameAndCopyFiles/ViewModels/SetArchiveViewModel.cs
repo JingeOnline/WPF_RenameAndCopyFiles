@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using HandyControl.Controls;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -28,7 +29,22 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         public string TargetArchiveFolderPath
         {
             get { return _TargetArchiveFolderPath; }
-            set { SetProperty(ref _TargetArchiveFolderPath, value); showTargetArchiveFolders(); }
+            set 
+            { 
+                SetProperty(ref _TargetArchiveFolderPath, value);
+                //验证用户手动输入的地址是否合法
+                if (_TargetArchiveFolderPath.IndexOfAny("?/:*\"<>|".ToCharArray())!=-1)
+                {
+                    TargetArchiveFolderPathError = "A valid path in windows system cannot contains ?/:*\"<>|";
+                    RaisePropertyChanged(nameof(TargetPathErrorVisibility));
+                }
+                else
+                {
+                    showTargetArchiveFolders();
+                    TargetArchiveFolderPathError = String.Empty;
+                    RaisePropertyChanged(nameof(TargetPathErrorVisibility));
+                }
+            }
         }
 
         private string _SourceArchiveFolderPathError;
@@ -106,7 +122,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             SelectSourceFolderCommand = new DelegateCommand(SelectSourceArchiveFolder);
             SelectTargetFolderCommand = new DelegateCommand(SelectTargetArchiveFolder);
 
-            CreateFolderIfNotExistCommand = new DelegateCommand(creatFolderIfNotExist, canCreateFolderIfNotExist);
+            CreateFolderIfNotExistCommand = new DelegateCommand(creatFolderIfNotExist, canCreateFolderIfNotExist).ObservesProperty(()=>TargetArchiveFolderPathError);
 
             //SourceArchiveFolderPath = ConfigurationManager.AppSettings["SourceArchiveFolderPath"] + "\\Backup " + DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
             //TargetArchiveFolderPath = ConfigurationManager.AppSettings["TargetArchiveFolderPath"]+"\\Backup "+DateTime.Now.ToString("yyyy-MM-dd #HH#mm#ss");
@@ -114,7 +130,8 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         private bool canCreateFolderIfNotExist()
         {
-            return true;
+            //return true;
+            return TargetArchiveFolderPathError == String.Empty;
         }
 
         private async void creatFolderIfNotExist()
@@ -136,12 +153,25 @@ namespace WPF_RenameAndCopyFiles.ViewModels
 
         private void showTargetArchiveFolders()
         {
-            TargetArchiveFolders = new ObservableCollection<DirectoryInfo>();
-            foreach (DirectoryInfo folder in GlobalStaticService.GlobalTargetFolders)
+            string targetArchivePath=String.Empty;
+            try
             {
-                string targetArchivePath = Path.Combine(folder.FullName, TargetArchiveFolderPath);
-                TargetArchiveFolders.Add(new DirectoryInfo(targetArchivePath));
-                folerToArchiveFolder[folder.FullName] = targetArchivePath;
+                TargetArchiveFolders = new ObservableCollection<DirectoryInfo>();
+                foreach (DirectoryInfo folder in GlobalStaticService.GlobalTargetFolders)
+                {
+                    targetArchivePath = Path.Combine(folder.FullName, TargetArchiveFolderPath);
+                    TargetArchiveFolders.Add(new DirectoryInfo(targetArchivePath));
+                    folerToArchiveFolder[folder.FullName] = targetArchivePath;
+                }
+            }
+            catch(ArgumentException ex)
+            {
+                string path = targetArchivePath == String.Empty ? TargetArchiveFolderPath : targetArchivePath;
+                HandyControl.Controls.MessageBox.Show(ex.Message+"\r\n"+path,"Invalid Path",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+            catch(Exception ex)
+            {
+                HandyControl.Controls.MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

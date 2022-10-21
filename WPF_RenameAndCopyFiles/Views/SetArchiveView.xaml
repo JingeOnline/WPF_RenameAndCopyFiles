@@ -56,7 +56,7 @@
                 Visibility="{Binding ElementName=ToggleButton_ArchiveSource,Path=IsChecked, Converter={StaticResource Boolean2VisibilityConverter}}"/>
         <!--Target-->
         <TextBlock Text="Target file archive folder" HorizontalAlignment="Left" Margin="0,16,0,8" Grid.Row="2"/>
-        <TextBox HorizontalAlignment="Stretch" Grid.Row="3" Text="{Binding TargetArchiveFolderPath, Mode=TwoWay}" x:Name="TargetTextBox">
+        <TextBox HorizontalAlignment="Stretch" Grid.Row="3" Text="{Binding TargetArchiveFolderPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="TargetTextBox">
             <TextBox.InputBindings>
                 <KeyBinding Command="{Binding Path=TargetArchiveFolderPathEnterCommand}" Key="Enter" CommandParameter="{Binding Path=Text,ElementName=TargetTextBox}"/>
             </TextBox.InputBindings>
