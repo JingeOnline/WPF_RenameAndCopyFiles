@@ -115,11 +115,11 @@
 
 
         <!--</StackPanel>-->
-        <Button HorizontalAlignment="Stretch" Content="Execute" Margin="32,32" Background="{DynamicResource PrimaryBrush}" Foreground="White"
+        <Button HorizontalAlignment="Stretch" Content="Execute" Margin="32,32" Style="{StaticResource ButtonPrimary}"
                 FontSize="14" VerticalContentAlignment="Center" Command="{Binding ExecuteCommand}" Grid.Row="1"
                 Visibility="{Binding IsDone, Converter={StaticResource Boolean2VisibilityReConverter}}">
         </Button>
-        <Button HorizontalAlignment="Stretch" Content="Done, Exit" Margin="32,32" Background="{DynamicResource PrimaryBrush}" Foreground="White"
+        <Button HorizontalAlignment="Stretch" Content="Done, Exit" Margin="32,32" Style="{StaticResource ButtonPrimary}"
                 FontSize="14" VerticalContentAlignment="Center" Command="{Binding ExitCommand}" Grid.Row="1"
                 Visibility="{Binding IsDone, Converter={StaticResource Boolean2VisibilityConverter}}">
         </Button>
