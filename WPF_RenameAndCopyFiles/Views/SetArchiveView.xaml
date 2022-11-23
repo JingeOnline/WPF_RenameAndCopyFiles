@@ -82,7 +82,8 @@
         </DataGrid>
         <StackPanel Grid.Row="5" Grid.Column="2" Margin="0,16,0,0">
             <Button Content="Create" HorizontalAlignment="Stretch" Command="{Binding CreateFolderIfNotExistCommand}"
-                    ToolTip="Create folder if not exist."/>
+                    ToolTip="Create folder if not exist."
+                    Style="{StaticResource ButtonPrimary}"/>
         </StackPanel>
     </Grid>
 
