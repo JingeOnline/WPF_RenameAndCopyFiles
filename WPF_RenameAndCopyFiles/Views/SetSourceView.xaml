@@ -53,7 +53,7 @@
                   AllowDrop="True" Helpers:FileDragDropHelper.IsFileDragDropEnabled="True" Helpers:FileDragDropHelper.FileDragDropTarget="{Binding}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="LastWriteTime" Binding="{Binding LastWriteTime}"/>
+                <DataGridTextColumn Header="LastWriteTime" Binding="{Binding LastWriteTime, ConverterCulture='en-AU'}"/>
                 <DataGridTextColumn Header="Size" Binding="{Binding Length}"/>
                 <DataGridTextColumn Header="Path" Binding="{Binding FullName}" Width="*"/>
             </DataGrid.Columns>

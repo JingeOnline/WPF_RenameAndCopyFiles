@@ -37,7 +37,7 @@ namespace WPF_RenameAndCopyFiles.Services
             List<string> middleNames = new List<string>();
             foreach (string keyName in keyNames)
             {
-                List<string> parts = keyName.Split('-').ToList();
+                List<string> parts = keyName.Split('#').ToList();
                 parts.RemoveAt(0);
                 parts.RemoveAt(parts.Count-1);
                 foreach(string part in parts)
