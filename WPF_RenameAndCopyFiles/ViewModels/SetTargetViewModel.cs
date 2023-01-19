@@ -59,7 +59,18 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         public string SelectedTemplate
         {
             get { return _SelectedTemplate; }
-            set { SetProperty(ref _SelectedTemplate, value); getTargetFolderPathsFromConfig(); }
+            set
+            {
+                if (value == "Template-None")
+                {
+                    SetProperty(ref _SelectedTemplate, null);
+                }
+                else
+                {
+                    SetProperty(ref _SelectedTemplate, value);
+                }
+                getTargetFolderPathsFromConfig();
+            }
         }
 
         //private DirectoryInfo _SelectedFolder;
@@ -98,15 +109,15 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             RemoveFolderCommand = new DelegateCommand<object>(RemoveFolder);
             AddUserInputPathCommand = new DelegateCommand(addUserInputPath);
             //getTargetFolderPathsFromConfig();
-            getTemplate();
+            loadTemplate();
         }
 
-        private void getTemplate()
+        private void loadTemplate()
         {
             List<string> templates = ConfigService.GetKeyMiddleNamesBySearchKeys("TargetFolderPath");
             //templates.Insert(0, "None");
-            //templates.Add("Template-None");
-            templates.Add("");
+            templates.Add("Template-None");
+            //templates.Add("");
             TemplateNames = new ObservableCollection<string>(templates);
         }
 

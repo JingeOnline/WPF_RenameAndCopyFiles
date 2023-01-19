@@ -63,7 +63,9 @@
         </DataGrid>
         <hc:ComboBox ItemsSource="{Binding TemplateNames}" SelectedItem="{Binding SelectedTemplate,Mode=TwoWay}" Margin="0,8,8,0"
                       ToolTip="Select a template"  hc:InfoElement.Placeholder="Template-None"
-                     Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Width="180"/>
+                     Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                     Width="180" MaxDropDownHeight="{Binding ElementName=DataGrid_DirectoryInfo, Path=ActualHeight, Mode=OneWay}"/>
+
         <StackPanel Grid.Row="3" Grid.Column="2">
             <!--<hc:ComboBox ItemsSource="{Binding TemplateNames}" SelectedItem="{Binding SelectedTemplate,Mode=TwoWay}" Margin="0,0,0,16"
                       ToolTip="Select a template"  hc:InfoElement.Placeholder="Template-None"/>-->
