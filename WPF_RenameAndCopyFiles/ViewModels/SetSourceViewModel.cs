@@ -155,7 +155,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         {
 
         }
-
+        //Return true for load an existing instance, false for create a new instance.
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
             return true;
