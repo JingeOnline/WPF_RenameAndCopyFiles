@@ -28,7 +28,7 @@
                      Width="100" HorizontalAlignment="Left">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xF0D5;" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                    <TextBlock Text="Previous"/>
+                    <TextBlock Text="Back"/>
                 </StackPanel>
             </Button>
             <Button Command="{Binding NextCommand}" 
