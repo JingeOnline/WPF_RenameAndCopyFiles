@@ -98,6 +98,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
         //public DelegateCommand UserInputPathEnterCommand { get; set; }
         public DelegateCommand AddFolderCommand { get; set; }
         public DelegateCommand<Object> RemoveFolderCommand { get; set; }
+        public DelegateCommand<string> OpenPathInFileExploreCommand { get; set; }
         private IEventAggregator _eventAggregator;
 
 
@@ -108,6 +109,7 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             AddFolderCommand = new DelegateCommand(AddFolder);
             RemoveFolderCommand = new DelegateCommand<object>(RemoveFolder);
             AddUserInputPathCommand = new DelegateCommand(addUserInputPath);
+            OpenPathInFileExploreCommand = new DelegateCommand<string>(openPathInFileExplore);
             //getTargetFolderPathsFromConfig();
             loadTemplate();
         }
@@ -225,6 +227,18 @@ namespace WPF_RenameAndCopyFiles.ViewModels
             TargetFolderNotExistCount = TargetFolders.Where(x => x.Exists == false).Count();
             //Turn off the loading animation
             _eventAggregator.GetEvent<LoadingOverlayEvent>().Publish(false);
+        }
+
+        private void openPathInFileExplore(string path)
+        {
+            try
+            {
+                Process.Start(path);
+            }
+            catch(Exception ex)
+            {
+                HandyControl.Controls.MessageBox.Show(ex.ToString(),"Cannot Open The Folder Path");
+            }
         }
 
         public void OnNavigatedTo(NavigationContext navigationContext)

@@ -13,8 +13,8 @@
     <UserControl.Resources>
         <converters:BoolToColorConverter x:Key="bool2color"/>
     </UserControl.Resources>
-    
-    
+
+
     <Grid Margin="0,16,0,16">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -45,7 +45,8 @@
                 <Run Text="{Binding TargetFolderNotExistCount,Mode=OneWay}"/>
             </TextBlock>
         </StackPanel>
-        <DataGrid Grid.Row="3" Grid.Column="0" ItemsSource="{Binding TargetFolders}" AutoGenerateColumns="False" IsReadOnly="True" x:Name="DataGrid_DirectoryInfo">
+        <DataGrid Grid.Row="3" Grid.Column="0" ItemsSource="{Binding TargetFolders}" 
+                  AutoGenerateColumns="False" IsReadOnly="True" x:Name="DataGrid_DirectoryInfo">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Root" Binding="{Binding Root}"/>
                 <!--<DataGridCheckBoxColumn Header="IsExist" Binding="{Binding Exists,Mode=OneWay}" IsReadOnly="True"/>-->
@@ -58,7 +59,22 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Path" Binding="{Binding FullName}" Width="*"/>
+                <!--<DataGridTextColumn Header="Path" Binding="{Binding FullName}" Width="*"/>-->
+                <DataGridTemplateColumn Width="*" Header="Path">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <!--A HyperLink Text allow user to click and navigation-->
+                            <TextBlock ToolTip="Open the path in File Explore">
+                                <Hyperlink Command="{Binding 
+                                    RelativeSource={RelativeSource Mode=FindAncestor,AncestorLevel=1,AncestorType=DataGrid},
+                                    Path=DataContext.OpenPathInFileExploreCommand}" 
+                                           CommandParameter="{Binding FullName}">
+                                    <TextBlock Text="{Binding FullName}"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <hc:ComboBox ItemsSource="{Binding TemplateNames}" SelectedItem="{Binding SelectedTemplate,Mode=TwoWay}" Margin="0,8,8,0"
